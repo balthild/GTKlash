@@ -1,0 +1,7 @@
+data/org.gnome.Gtklash.desktop.in
+data/org.gnome.Gtklash.appdata.xml.in
+data/org.gnome.Gtklash.gschema.xml
+src/window.ui
+src/main.vala
+src/window.vala
+
