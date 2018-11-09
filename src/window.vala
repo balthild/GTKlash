@@ -3,9 +3,9 @@ using Gtk;
 namespace Gtklash {
     [GtkTemplate(ui = "/org/gnome/Gtklash/window.ui")]
     public class Window : ApplicationWindow {
-        Widget[] contents =  {
+        Box[] contents = {
             new Gtklash.Contents.Overview(),
-            new Gtklash.Contents.Overview(),
+            new Gtklash.Contents.Servers(),
         };
 
         [GtkChild]
@@ -17,11 +17,10 @@ namespace Gtklash {
 
         [GtkCallback]
         private void switch_content(ListBox _, ListBoxRow? row) {
+            content.foreach((child) => content.remove(child));
+
             int n = row.get_index();
-            string name = row.name.substring(4);
-            print("Row changed: %d, %s\n", n, name);
             content.child = contents[n];
         }
     }
 }
-

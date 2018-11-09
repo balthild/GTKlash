@@ -3,6 +3,6 @@
   <gresource prefix="/org/gnome/Gtklash">
     <file>window.ui</file>
     <file>contents/overview.ui</file>
+    <file>contents/servers.ui</file>
   </gresource>
 </gresources>
-

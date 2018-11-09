@@ -16,7 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+extern void test_c_func(int i);
+
 int main(string[] args) {
+    test_c_func(1234);
+
     var app = new Gtk.Application("org.gnome.Gtklash", ApplicationFlags.FLAGS_NONE);
     app.activate.connect(() => {
         var win = app.active_window;
@@ -28,4 +32,3 @@ int main(string[] args) {
 
     return app.run(args);
 }
-

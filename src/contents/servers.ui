@@ -2,13 +2,13 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
-  <template class="GtklashContentsOverview" parent="GtkBox">
+  <template class="GtklashContentsServers" parent="GtkBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkButton">
-        <property name="label" translatable="yes">overview</property>
+        <property name="label" translatable="yes">servers</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">True</property>
