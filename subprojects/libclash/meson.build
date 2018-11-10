@@ -12,11 +12,9 @@ r = run_command(go, 'build',
 )
 assert(r.returncode() == 0, r.stderr())
 
-libclash_deps = [
-  cc.find_library('pthread'),
-  cc.find_library('clash', dirs: meson.current_source_dir()),
-]
-
 libclash_obj = declare_dependency(
-  dependencies: libclash_deps,
+  dependencies: [
+    cc.find_library('pthread'),
+    cc.find_library('clash', dirs: meson.current_source_dir()),
+  ],
 )

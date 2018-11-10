@@ -10,12 +10,6 @@ import (
 	"github.com/Dreamacro/clash/tunnel"
 )
 
-//export test_c_func
-func test_c_func(i int) {
-	println("Calling from C ABI.")
-	println(i)
-}
-
 //export clash_run
 func clash_run() *C.char {
 	tunnel.Instance().Run()
@@ -26,7 +20,6 @@ func clash_run() *C.char {
 	err := config.Instance().Parse()
 	if err != nil {
 		return C.CString(err.Error())
-
 	}
 
 	return C.CString("success")
@@ -38,12 +31,12 @@ func clash_update_all_config() *C.char {
 	if err != nil {
 		return C.CString(err.Error())
 	}
-	return C.CString("")
+	return C.CString("success")
 }
 
 //export clash_set_config_home_dir
-func clash_set_config_home_dir(root string) {
-	constant.SetHomeDir(root)
+func clash_set_config_home_dir(root *C.char) {
+	constant.SetHomeDir(C.GoString(root))
 }
 
 func main() {}
