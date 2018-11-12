@@ -1,14 +1,27 @@
 gtklash_sources = [
   'main.vala',
-  'config.vala',
+  'variables.vala',
+
   'window.vala',
-  'contents/overview.vala',
-  'contents/servers.vala',
+  'content/overview.vala',
+  'content/servers.vala',
+
+  'model/config.vala',
+  'model/proxy.vala',
+  'model/proxy_group.vala',
+  'model/proxy/shadowsocks.vala',
+  'model/proxy/socks5.vala',
+
+  'config/file.vala',
+  'config/serializing.vala',
+  'config/default.vala',
 ]
 
 gtklash_deps = [
   dependency('gio-2.0', version: '>= 2.50'),
   dependency('gtk+-3.0', version: '>= 3.22'),
+  dependency('gee-0.8'),
+  dependency('json-glib-1.0'),
 ]
 
 gnome = import('gnome')

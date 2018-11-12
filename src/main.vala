@@ -19,34 +19,13 @@
 extern string clash_run();
 extern string clash_update_all_config();
 extern void clash_set_config_home_dir(string path);
-extern string clash_test();
 
 int main(string[] args) {
-    // Ensure config
-    string config_dir = Environment.get_user_config_dir() + "/gtklash";
+    Gtklash.init_config();
 
-    File config_file = File.new_for_path(config_dir + "/config.yml");
-    if (!config_file.query_exists()) {
-        Gtklash.write_default_config(config_file, false);
-    } else {
-        FileInfo info = config_file.query_info(FileAttribute.STANDARD_SIZE, 0);
-        if (info.get_size() == 0) {
-            Gtklash.write_default_config(config_file, true);
-        }
-    }
+    clash_set_config_home_dir(Gtklash.get_config_dir() + "/clash");
+    // clash_run();
 
-    int status = DirUtils.create_with_parents(config_dir, 0755);
-    if (status != 0) {
-        // TODO: Show a notification window
-        print("Cannot create config directory: %s\n", config_dir);
-        return -1;
-    }
-
-    // Start Clash
-    clash_set_config_home_dir(config_dir);
-    clash_run();
-
-    // Start GUI
     var app = new Gtk.Application("org.gnome.Gtklash", ApplicationFlags.FLAGS_NONE);
     app.activate.connect(() => {
         var win = app.active_window;
