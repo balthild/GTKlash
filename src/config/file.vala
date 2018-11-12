@@ -24,7 +24,7 @@ namespace Gtklash {
             stream = config_file.create(FileCreateFlags.NONE);
         }
 
-        string data = serialize_config(Vars.config);
+        string data = Vars.config.serialize();
         stream.write(data.data);
 
         // TODO: Generate clash config
@@ -35,7 +35,7 @@ namespace Gtklash {
         FileInputStream stream = config_file.read();
 
         string data = read_all(stream);
-        Vars.config = deserialize_config(data);
+        Vars.config = Config.deserialize(data);
     }
 
     void init_default_config() {

@@ -12,11 +12,11 @@ namespace Gtklash {
             obj.set_string_member("name", name);
             obj.set_string_member("type", type);
 
-            var proxy_names = new Json.Array();
-            foreach (string proxy in proxies) {
-                proxy_names.add_string_element(proxy);
+            var proxies = new Json.Array();
+            foreach (string proxy in this.proxies) {
+                proxies.add_string_element(proxy);
             }
-            obj.set_array_member("proxies", proxy_names);
+            obj.set_array_member("proxies", proxies);
 
             if (url != null) obj.set_string_member("url", url);
             if (interval != null) obj.set_int_member("interval", interval);
@@ -24,9 +24,9 @@ namespace Gtklash {
             return obj;
         }
 
-        public bool deserialize(Json.Object obj) {
+        public static ProxyGroup deserialize(Json.Object obj) {
             // TODO
-            return false;
+            return ProxyGroup();
         }
     }
 }

@@ -13,7 +13,6 @@ gtklash_sources = [
   'model/proxy/socks5.vala',
 
   'config/file.vala',
-  'config/serializing.vala',
   'config/default.vala',
 ]
 
