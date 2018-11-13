@@ -1,6 +1,7 @@
 gtklash_sources = [
   'main.vala',
   'variables.vala',
+  'config.vala',
 
   'window.vala',
   'content/overview.vala',
@@ -11,9 +12,6 @@ gtklash_sources = [
   'model/proxy_group.vala',
   'model/proxy/shadowsocks.vala',
   'model/proxy/socks5.vala',
-
-  'config/file.vala',
-  'config/default.vala',
 ]
 
 gtklash_deps = [

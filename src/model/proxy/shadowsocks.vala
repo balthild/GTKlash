@@ -18,5 +18,11 @@ namespace Gtklash {
         }
 
         public override string get_proxy_type() { return "ss"; }
+
+        public Shadowsocks.deserialize(Json.Object obj) {
+            base.deserialize(obj);
+            this.cipher = obj.get_string_member("cipher");
+            this.password = obj.get_string_member("password");
+        }
     }
 }

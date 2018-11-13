@@ -1,3 +1,5 @@
+using Gee;
+
 namespace Gtklash {
     public struct Config {
         ushort port;
@@ -7,8 +9,8 @@ namespace Gtklash {
         string log_level;
         string mode;
 
-        Gee.LinkedList<Proxy> proxies;
-        Gee.LinkedList<ProxyGroup?> proxy_groups;
+        LinkedList<Proxy> proxies;
+        LinkedList<ProxyGroup?> proxy_groups;
         string rules;
 
         public string serialize() {
@@ -42,6 +44,8 @@ namespace Gtklash {
             }
             obj.set_array_member("proxy-groups", proxy_groups);
 
+            obj.set_string_member("rules", rules);
+
             var node = new Json.Node(Json.NodeType.OBJECT);
             node.set_object(obj);
 
@@ -54,8 +58,45 @@ namespace Gtklash {
         }
 
         public static Config deserialize(string data) {
-            // TODO
-            return Config();
+            Json.Parser parser = new Json.Parser();
+            parser.load_from_data(data);
+            Json.Node node = parser.get_root();
+            unowned Json.Object obj = node.get_object();
+
+            var config = Config() {
+                port = (ushort) obj.get_int_member("port"),
+                socks_port = (ushort) obj.get_int_member("socks-port"),
+                allow_lan = obj.get_boolean_member("allow-lan"),
+                external_controller = obj.get_string_member("external-controller"),
+                log_level = obj.get_string_member("log-level"),
+                mode = obj.get_string_member("mode"),
+
+                proxies = new LinkedList<Proxy>(),
+                proxy_groups = new LinkedList<ProxyGroup?>(),
+                rules = obj.get_string_member("rules")
+            };
+
+            Json.Array proxies = obj.get_array_member("proxies");
+            foreach (weak Json.Node proxy_node in proxies.get_elements()) {
+                Json.Object proxy_obj = proxy_node.get_object();
+                string type = proxy_obj.get_string_member("type");
+                Proxy proxy;
+                switch (type) {
+                    case "ss": proxy = new Shadowsocks.deserialize(proxy_obj); break;
+                    case "socks5": proxy = new Socks5.deserialize(proxy_obj); break;
+                    default: assert_not_reached();
+                }
+                config.proxies.add(proxy);
+            }
+
+            Json.Array proxy_groups = obj.get_array_member("proxy_groups");
+            foreach (weak Json.Node group_node in proxy_groups.get_elements()) {
+                Json.Object group_obj = group_node.get_object();
+                ProxyGroup proxy_group = ProxyGroup.deserialize(group_obj);
+                config.proxy_groups.add(proxy_group);
+            }
+
+            return config;
         }
     }
 }

@@ -5,5 +5,9 @@ namespace Gtklash {
         }
 
         public override string get_proxy_type() { return "socks5"; }
+
+        public Socks5.deserialize(Json.Object obj) {
+            base.deserialize(obj);
+        }
     }
 }

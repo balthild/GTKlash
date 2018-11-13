@@ -25,8 +25,25 @@ namespace Gtklash {
         }
 
         public static ProxyGroup deserialize(Json.Object obj) {
-            // TODO
-            return ProxyGroup();
+            var group = ProxyGroup() {
+                name = obj.get_string_member("name"),
+                type = obj.get_string_member("type"),
+                proxies = new Gee.LinkedList<string>()
+            };
+
+            Json.Array proxies = obj.get_array_member("proxies");
+            foreach (weak Json.Node node in proxies.get_elements()) {
+                string proxy = node.get_string();
+                group.proxies.add(proxy);
+            }
+
+            if (obj.has_member("url"))
+                group.type = obj.get_string_member("url");
+
+            if (obj.has_member("interval"))
+                group.interval = (uint) obj.get_int_member("interval");
+
+            return group;
         }
     }
 }

@@ -23,9 +23,10 @@ namespace Gtklash {
             return obj;
         }
 
-        public bool deserialize(Json.Object obj) {
-            // TODO
-            return false;
+        public Proxy.deserialize(Json.Object obj) {
+            name = obj.get_string_member("name");
+            server = obj.get_string_member("server");
+            port = (ushort) obj.get_int_member("port");
         }
     }
 }
