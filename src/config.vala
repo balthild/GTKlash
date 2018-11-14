@@ -20,20 +20,31 @@ namespace Gtklash {
         return data.str;
     }
 
-    void save_config(bool create = false) {
-        File config_file = File.new_for_path(get_config_path());
+    void save_clash_config() {
+        string config_dir = get_config_dir() + "/clash";
 
-        FileOutputStream stream;
-        if (create) {
-            stream = config_file.replace(null, false, FileCreateFlags.NONE);
-        } else {
-            stream = config_file.create(FileCreateFlags.NONE);
+        int status = DirUtils.create_with_parents(config_dir, 0755);
+        if (status != 0) {
+            // TODO: Show a notification window
+            print("Cannot create clash config directory: %s\n", config_dir);
+            Process.exit(-1);
         }
+
+        File config_file = File.new_for_path(config_dir + "/config.yml");
+        FileOutputStream stream = config_file.replace(null, false, FileCreateFlags.NONE);
+
+        string data = Vars.config.generate_clash_config();
+        stream.write(data.data);
+    }
+
+    void save_config() {
+        File config_file = File.new_for_path(get_config_path());
+        FileOutputStream stream = config_file.replace(null, false, FileCreateFlags.NONE);
 
         string data = Vars.config.serialize();
         stream.write(data.data);
 
-        // TODO: Generate clash config
+        save_clash_config();
     }
 
     void load_config() {
@@ -42,11 +53,13 @@ namespace Gtklash {
 
         string data = read_all(stream);
         Vars.config = Config.deserialize(data);
+
+        save_clash_config();
     }
 
     void init_default_config() {
         Vars.config = get_default_config();
-        save_config(true);
+        save_config();
     }
 
     void init_config() {

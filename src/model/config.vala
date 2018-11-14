@@ -58,8 +58,11 @@ namespace Gtklash {
         }
 
         public static Config deserialize(string data) {
+            string json_data = data.split("\n")[1];
+
             Json.Parser parser = new Json.Parser();
-            parser.load_from_data(data);
+            parser.load_from_data(json_data);
+
             Json.Node node = parser.get_root();
             unowned Json.Object obj = node.get_object();
 
@@ -89,7 +92,7 @@ namespace Gtklash {
                 config.proxies.add(proxy);
             }
 
-            Json.Array proxy_groups = obj.get_array_member("proxy_groups");
+            Json.Array proxy_groups = obj.get_array_member("proxy-groups");
             foreach (weak Json.Node group_node in proxy_groups.get_elements()) {
                 Json.Object group_obj = group_node.get_object();
                 ProxyGroup proxy_group = ProxyGroup.deserialize(group_obj);
@@ -97,6 +100,49 @@ namespace Gtklash {
             }
 
             return config;
+        }
+
+        public string generate_clash_config() {
+            // Don't worry, YAML is a superset of JSON.
+
+            var obj = new Json.Object();
+            obj.set_int_member("port", port);
+            obj.set_int_member("socks-port", socks_port);
+            obj.set_boolean_member("allow-lan", allow_lan);
+            obj.set_string_member("external-controller", external_controller);
+            obj.set_string_member("log-level", log_level);
+            obj.set_string_member("mode", mode);
+
+            var proxies = new Json.Array();
+            foreach (Proxy proxy in this.proxies) {
+                proxies.add_object_element(proxy.serialize());
+            }
+            obj.set_array_member("Proxy", proxies);
+
+            var proxy_groups = new Json.Array();
+            foreach (ProxyGroup group in this.proxy_groups) {
+                proxy_groups.add_object_element(group.serialize());
+            }
+            obj.set_array_member("Proxy Group", proxy_groups);
+
+            string[] rule_lines = rules.split("\n");
+            var clash_rules = new Json.Array();
+            foreach (string line in rule_lines) {
+                string rule = line.strip();
+                if (line == "" || line[0] == '#') continue;
+
+                // TODO: Check rule syntax
+                clash_rules.add_string_element(rule);
+            }
+            obj.set_array_member("Rule", clash_rules);
+
+            var node = new Json.Node(Json.NodeType.OBJECT);
+            node.set_object(obj);
+
+            Json.Generator generator = new Json.Generator();
+            generator.set_root(node);
+
+            return generator.to_data(null);
         }
     }
 }
