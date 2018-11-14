@@ -11,6 +11,7 @@ gtklash_sources = [
   'model/proxy.vala',
   'model/proxy_group.vala',
   'model/proxy/shadowsocks.vala',
+  'model/proxy/vmess.vala',
   'model/proxy/socks5.vala',
 ]
 

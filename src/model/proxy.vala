@@ -1,5 +1,7 @@
 namespace Gtklash {
     public abstract class Proxy {
+        public abstract string get_proxy_type();
+
         public string name { get; protected set; }
         public string server { get; protected set; }
         public ushort port { get; protected set; }
@@ -10,9 +12,13 @@ namespace Gtklash {
             this.port = port;
         }
 
-        public abstract string get_proxy_type();
+        public Proxy.deserialize(Json.Object obj) {
+            name = obj.get_string_member("name");
+            server = obj.get_string_member("server");
+            port = (ushort) obj.get_int_member("port");
+        }
 
-        public Json.Object serialize() {
+        public virtual Json.Object serialize() {
             var obj = new Json.Object();
 
             obj.set_string_member("type", get_proxy_type());
@@ -21,12 +27,6 @@ namespace Gtklash {
             obj.set_int_member("port", port);
 
             return obj;
-        }
-
-        public Proxy.deserialize(Json.Object obj) {
-            name = obj.get_string_member("name");
-            server = obj.get_string_member("server");
-            port = (ushort) obj.get_int_member("port");
         }
     }
 }
