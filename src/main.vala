@@ -30,7 +30,7 @@ int main(string[] args) {
     app.activate.connect(() => {
         var win = app.active_window;
         if (win == null) {
-            win = new Gtklash.Window(app);
+            win = new Gtklash.UI.Window(app);
         }
         win.present();
     });

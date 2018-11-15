@@ -3,9 +3,10 @@ gtklash_sources = [
   'variables.vala',
   'config.vala',
 
-  'window.vala',
-  'content/overview.vala',
-  'content/servers.vala',
+  'ui/window.vala',
+  'ui/content.vala',
+  'ui/overview.vala',
+  'ui/servers.vala',
 
   'model/config.vala',
   'model/proxy.vala',
@@ -20,6 +21,7 @@ gtklash_deps = [
   dependency('gtk+-3.0', version: '>= 3.22'),
   dependency('gee-0.8'),
   dependency('json-glib-1.0'),
+  dependency('libsoup-2.4', version: '>= 2.47')
 ]
 
 gnome = import('gnome')

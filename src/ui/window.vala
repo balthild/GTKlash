@@ -1,11 +1,11 @@
 using Gtk;
 
-namespace Gtklash {
-    [GtkTemplate(ui = "/org/gnome/Gtklash/window.ui")]
+namespace Gtklash.UI {
+    [GtkTemplate(ui = "/org/gnome/Gtklash/ui/window.ui")]
     public class Window : ApplicationWindow {
-        Box[] contents = {
-            new Gtklash.Contents.Overview(),
-            new Gtklash.Contents.Servers(),
+        Content[] contents = {
+            new Gtklash.UI.Overview(),
+            new Gtklash.UI.Servers(),
         };
 
         [GtkChild]
@@ -19,8 +19,9 @@ namespace Gtklash {
         private void switch_content(ListBox _, ListBoxRow? row) {
             content.foreach((child) => content.remove(child));
 
-            int n = row.get_index();
-            content.child = contents[n];
+            Content widget = contents[row.get_index()];
+            content.child = widget;
+            widget.on_active();
         }
     }
 }
