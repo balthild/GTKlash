@@ -104,8 +104,8 @@ namespace Gtklash {
 
         public string generate_clash_config() {
             // Don't worry, YAML is a superset of JSON.
-
             var obj = new Json.Object();
+
             obj.set_int_member("port", port);
             obj.set_int_member("socks-port", socks_port);
             obj.set_boolean_member("allow-lan", allow_lan);
