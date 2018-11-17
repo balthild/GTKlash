@@ -1,0 +1,19 @@
+.sidebar-row {
+    min-height: 48px;
+    padding: 0 16px;
+}
+
+.overview .status-label {
+    font-size: 3em;
+    font-weight: bold;
+    opacity: 0.5;
+    margin-bottom: 0.8em;
+}
+
+.overview .port-status-label {
+    margin-bottom: 0.8em;
+}
+
+.settings {
+    padding: 32px;
+}

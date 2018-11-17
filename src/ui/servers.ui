@@ -19,5 +19,8 @@
         <property name="position">0</property>
       </packing>
     </child>
+    <style>
+      <class name="settings"/>
+    </style>
   </template>
 </interface>

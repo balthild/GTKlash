@@ -1,6 +1,8 @@
 gtklash_sources = [
   'main.vala',
+  'app.vala',
   'variables.vala',
+  'utils.vala',
   'config.vala',
 
   'ui/window.vala',

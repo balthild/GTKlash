@@ -26,7 +26,7 @@ int main(string[] args) {
     clash_set_config_home_dir(Gtklash.get_config_dir() + "/clash");
     clash_run();
 
-    var app = new Gtk.Application("org.gnome.Gtklash", ApplicationFlags.FLAGS_NONE);
+    var app = new Gtklash.App();
     app.activate.connect(() => {
         var win = app.active_window;
         if (win == null) {
