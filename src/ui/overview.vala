@@ -17,10 +17,10 @@ namespace Gtklash.UI {
         [GtkChild] Label traffic_down_label;
 
         public Overview() {
-            update_traffic_daemon.begin();
+            update_traffic.begin();
         }
 
-        async void update_traffic_daemon() {
+        async void update_traffic() {
             while (true) {
                 yield later(1000);
 
@@ -31,22 +31,22 @@ namespace Gtklash.UI {
                 Soup.Request request = traffic_session.request_http("GET", uri);
 
                 InputStream stream = yield request.send_async(null);
-            	DataInputStream data_stream = new DataInputStream(stream);
+                DataInputStream data_stream = new DataInputStream(stream);
 
-            	string line;
-            	while ((line = yield data_stream.read_line_async()) != null) {
+                string line;
+                while ((line = yield data_stream.read_line_async()) != null) {
                     var obj = parse_json_object(line);
 
                     int64 up = obj.get_int_member("up");
                     int64 down = obj.get_int_member("down");
 
-            		Idle.add(() => {
+                    Idle.add(() => {
                         traffic_up_label.set_text(format_traffic(up));
                         traffic_down_label.set_text(format_traffic(down));
 
                         return Source.REMOVE;
                     });
-            	}
+                }
             }
         }
 
