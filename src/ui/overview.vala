@@ -3,6 +3,8 @@ using Gtk;
 namespace Gtklash.UI {
     [GtkTemplate(ui = "/org/gnome/Gtklash/res/overview.ui")]
     public class Overview : Box, Content {
+        bool shown = false;
+
         Soup.Session session = new Soup.Session();
 
         [GtkChild] Label status_label;
@@ -22,10 +24,20 @@ namespace Gtklash.UI {
 
         async void update_traffic() {
             while (true) {
-                yield later(1000);
+                yield later(200);
 
-                if (!visible || Vars.clash_status != SUCCEEDED)
+                if (!shown)
                     continue;
+
+                if (Vars.clash_status != SUCCEEDED) {
+                    Idle.add(() => {
+                        traffic_up_label.set_text("-- Byte/s");
+                        traffic_down_label.set_text("-- Byte/s");
+
+                        return Source.REMOVE;
+                    });
+                    continue;
+                }
 
                 string uri = "http://%s/traffic".printf(Vars.config.external_controller);
                 Soup.Request request = traffic_session.request_http("GET", uri);
@@ -47,6 +59,8 @@ namespace Gtklash.UI {
                         return Source.REMOVE;
                     });
                 }
+
+                yield later(800);
             }
         }
 
@@ -132,11 +146,15 @@ namespace Gtklash.UI {
         }
 
         public void on_show() {
+            shown = true;
+
             update_status();
             check_clash.begin();
             // TODO: Traffic rate
         }
 
-        public void on_hide() {}
+        public void on_hide() {
+            shown = false;
+        }
     }
 }
