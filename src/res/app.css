@@ -10,8 +10,17 @@
     margin-bottom: 0.8em;
 }
 
-.overview .port-status-label {
+.overview .info-label {
     margin-bottom: 0.8em;
+}
+
+.overview .traffic-icon {
+    margin-right: 0.4em;
+    font-size: 1.2em;
+}
+
+.overview .traffic-label {
+    margin-right: 1em;
 }
 
 .settings {

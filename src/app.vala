@@ -11,7 +11,7 @@ namespace Gtklash {
             base.activate();
 
             Gtk.CssProvider css_provider = new Gtk.CssProvider();
-            css_provider.load_from_resource("/org/gnome/Gtklash/ui/app.css");
+            css_provider.load_from_resource("/org/gnome/Gtklash/res/app.css");
             Gtk.StyleContext.add_provider_for_screen(
                 Gdk.Screen.get_default(),
                 css_provider,

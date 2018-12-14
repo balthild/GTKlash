@@ -24,7 +24,13 @@ int main(string[] args) {
     Gtklash.init_config();
 
     clash_set_config_home_dir(Gtklash.get_config_dir() + "/clash");
-    clash_run();
+    string result = clash_run();
+    if (result == "success") {
+        Gtklash.Vars.clash_status = Gtklash.Status.SUCCEEDED;
+    } else {
+        Gtklash.Vars.clash_status = Gtklash.Status.FAILED;
+        Gtklash.Vars.clash_error_info = result;
+    }
 
     var app = new Gtklash.App();
     app.activate.connect(() => {

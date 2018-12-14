@@ -1,27 +1,41 @@
 using Gtk;
 
 namespace Gtklash.UI {
-    [GtkTemplate(ui = "/org/gnome/Gtklash/ui/window.ui")]
+    [GtkTemplate(ui = "/org/gnome/Gtklash/res/window.ui")]
     public class Window : ApplicationWindow {
         Content[] contents = {
             new Gtklash.UI.Overview(),
             new Gtklash.UI.Servers(),
         };
 
+        int active = 0;
+
         [GtkChild]
         Bin content;
 
         public Window(Gtk.Application app) {
             Object(application: app);
+
+            Content widget = contents[active];
+            content.add(widget);
+            widget.on_show();
         }
 
         [GtkCallback]
         private void switch_content(ListBox _, ListBoxRow? row) {
-            content.foreach((child) => content.remove(child));
+            int new_active = row.get_index();
+            if (new_active == active)
+                return;
 
-            Content widget = contents[row.get_index()];
-            content.child = widget;
-            widget.on_active();
+            Content widget = contents[active];
+            content.remove(widget);
+            widget.on_hide();
+
+            Content new_widget = contents[new_active];
+            content.add(new_widget);
+            new_widget.on_show();
+
+            active = new_active;
         }
     }
 }

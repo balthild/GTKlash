@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/org/gnome/Gtklash">
-    <file>ui/app.css</file>
-    <file>ui/window.ui</file>
-    <file>ui/overview.ui</file>
-    <file>ui/servers.ui</file>
+    <file>res/app.css</file>
+    <file>res/window.ui</file>
+    <file>res/overview.ui</file>
+    <file>res/servers.ui</file>
   </gresource>
 </gresources>
