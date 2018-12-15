@@ -21,10 +21,7 @@ namespace Gtklash.UI {
             }
         }
 
-        public void on_show() {
-            //
-        }
-
+        public void on_show() {}
         public void on_hide() {}
     }
 }

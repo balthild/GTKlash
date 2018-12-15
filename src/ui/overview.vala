@@ -47,7 +47,10 @@ namespace Gtklash.UI {
 
                 string line;
                 while ((line = yield data_stream.read_line_async()) != null) {
-                    var obj = parse_json_object(line);
+                    if (!shown)
+                        continue;
+
+                    Json.Object obj = parse_json_object(line);
 
                     int64 up = obj.get_int_member("up");
                     int64 down = obj.get_int_member("down");

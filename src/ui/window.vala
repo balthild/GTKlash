@@ -16,9 +16,8 @@ namespace Gtklash.UI {
         public Window(Gtk.Application app) {
             Object(application: app);
 
-            foreach (Content c in contents) {
-                c.expand = true;
-            }
+            foreach (Content widget in contents)
+                widget.expand = true;
 
             Content widget = contents[active];
             content.add(widget);
