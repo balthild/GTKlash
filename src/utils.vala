@@ -7,6 +7,17 @@ namespace Gtklash {
         yield;
     }
 
+    string read_all(InputStream stream) {
+        var data_stream = new DataInputStream(stream);
+        var data = new StringBuilder();
+        string line;
+        while ((line = data_stream.read_line(null)) != null) {
+            data.append(line);
+            data.append("\n");
+        }
+        return data.str;
+    }
+
     Json.Object parse_json_object(string data) {
         Json.Parser parser = new Json.Parser();
         parser.load_from_data(data);

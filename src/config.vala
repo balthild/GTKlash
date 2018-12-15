@@ -9,17 +9,6 @@ namespace Gtklash {
         return get_config_dir() + "/gtklash.conf";
     }
 
-    string read_all(FileInputStream stream) {
-        var data_stream = new DataInputStream(stream);
-        var data = new StringBuilder();
-        string line;
-        while ((line = data_stream.read_line(null)) != null) {
-            data.append(line);
-            data.append("\n");
-        }
-        return data.str;
-    }
-
     void save_clash_config() {
         string config_dir = get_config_dir() + "/clash";
 

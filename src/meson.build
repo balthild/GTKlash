@@ -5,10 +5,14 @@ gtklash_sources = [
   'utils.vala',
   'config.vala',
 
+  'ui/common.vala',
   'ui/window.vala',
   'ui/content.vala',
   'ui/overview.vala',
-  'ui/servers.vala',
+  'ui/proxies.vala',
+
+  'ui/vector_icon.vala',
+  'ui/proxy_item.vala',
 
   'model/config.vala',
   'model/proxy.vala',
@@ -21,6 +25,8 @@ gtklash_sources = [
 gtklash_deps = [
   dependency('gio-2.0', version: '>= 2.50'),
   dependency('gtk+-3.0', version: '>= 3.22'),
+  dependency('gdk-pixbuf-2.0'),
+  dependency('librsvg-2.0'),
   dependency('gee-0.8'),
   dependency('json-glib-1.0'),
   dependency('libsoup-2.4', version: '>= 2.47')

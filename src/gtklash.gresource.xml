@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/org/gnome/Gtklash">
-    <file>res/app.css</file>
-    <file>res/window.ui</file>
-    <file>res/overview.ui</file>
-    <file>res/servers.ui</file>
+    <file compressed="true">res/app.css</file>
+    <file compressed="true">res/img/icon_done.svg</file>
+
+    <file compressed="true">res/window.ui</file>
+    <file compressed="true">res/overview.ui</file>
+    <file compressed="true">res/proxies.ui</file>
+
+    <file compressed="true">res/proxy_item.ui</file>
   </gresource>
 </gresources>

@@ -5,16 +5,20 @@ namespace Gtklash.UI {
     public class Window : ApplicationWindow {
         Content[] contents = {
             new Gtklash.UI.Overview(),
-            new Gtklash.UI.Servers(),
+            new Gtklash.UI.Proxies(),
         };
 
         int active = 0;
 
         [GtkChild]
-        Bin content;
+        Box content;
 
         public Window(Gtk.Application app) {
             Object(application: app);
+
+            foreach (Content c in contents) {
+                c.expand = true;
+            }
 
             Content widget = contents[active];
             content.add(widget);

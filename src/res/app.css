@@ -3,26 +3,44 @@
     padding: 0 16px;
 }
 
-.overview .status-label {
+.content-overview .status-label {
     font-size: 3em;
     font-weight: bold;
     opacity: 0.5;
     margin-bottom: 0.8em;
 }
 
-.overview .info-label {
+.content-overview .info-label {
     margin-bottom: 0.8em;
 }
 
-.overview .traffic-icon {
+.content-overview .traffic-icon {
     margin-right: 0.4em;
     font-size: 1.2em;
 }
 
-.overview .traffic-label {
+.content-overview .traffic-label {
     margin-right: 1em;
 }
 
-.settings {
+.data-list {
+    border-width: 1px;
+    border-style: solid;
+}
+
+.content-proxies .proxy-descriptions {
+    padding: 12px 16px;
+}
+
+.content-proxies .proxy-name {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.content-proxies .proxy-addr {
+    opacity: 0.7;
+}
+
+.content-settings {
     padding: 32px;
 }

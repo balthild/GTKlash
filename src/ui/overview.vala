@@ -150,7 +150,6 @@ namespace Gtklash.UI {
 
             update_status();
             check_clash.begin();
-            // TODO: Traffic rate
         }
 
         public void on_hide() {

@@ -195,7 +195,7 @@
       </packing>
     </child>
     <style>
-      <class name="overview"/>
+      <class name="content-overview"/>
     </style>
   </template>
 </interface>
