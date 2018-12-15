@@ -8,6 +8,7 @@ namespace Gtklash {
         string external_controller;
         string log_level;
         string mode;
+        string active_proxy;
 
         LinkedList<Proxy> proxies;
         LinkedList<ProxyGroup?> proxy_groups;
@@ -31,6 +32,7 @@ namespace Gtklash {
             obj.set_string_member("external-controller", external_controller);
             obj.set_string_member("log-level", log_level);
             obj.set_string_member("mode", mode);
+            obj.set_string_member("active-proxy", active_proxy);
 
             var proxies = new Json.Array();
             foreach (Proxy proxy in this.proxies) {
@@ -73,6 +75,7 @@ namespace Gtklash {
                 external_controller = obj.get_string_member("external-controller"),
                 log_level = obj.get_string_member("log-level"),
                 mode = obj.get_string_member("mode"),
+                active_proxy = obj.get_string_member("active-proxy"),
 
                 proxies = new LinkedList<Proxy>(),
                 proxy_groups = new LinkedList<ProxyGroup?>(),
@@ -97,6 +100,10 @@ namespace Gtklash {
             foreach (weak Json.Node group_node in proxy_groups.get_elements()) {
                 Json.Object group_obj = group_node.get_object();
                 ProxyGroup proxy_group = ProxyGroup.deserialize(group_obj);
+
+                if (proxy_group.name == "Proxy")
+                    continue;
+
                 config.proxy_groups.add(proxy_group);
             }
 
@@ -114,6 +121,7 @@ namespace Gtklash {
             obj.set_string_member("log-level", log_level);
             obj.set_string_member("mode", mode);
 
+            // Proxies
             var proxies = new Json.Array();
             foreach (Proxy proxy in this.proxies) {
                 proxies.add_object_element(proxy.serialize());
@@ -124,6 +132,19 @@ namespace Gtklash {
             foreach (ProxyGroup group in this.proxy_groups) {
                 proxy_groups.add_object_element(group.serialize());
             }
+
+            // Proxy Groups
+            var default_group = ProxyGroup() {
+                name = "Proxy",
+                type = "select",
+                proxies = new LinkedList<string>()
+            };
+            default_group.proxies.add("local-socks5");
+            foreach (Proxy proxy in this.proxies) {
+                default_group.proxies.add(proxy.name);
+            }
+            proxy_groups.add_object_element(default_group.serialize());
+
             obj.set_array_member("Proxy Group", proxy_groups);
 
             string[] rule_lines = rules.split("\n");

@@ -18,8 +18,18 @@ namespace Gtklash.UI {
         [GtkChild] Label traffic_up_label;
         [GtkChild] Label traffic_down_label;
 
-        public Overview() {
+        [GtkChild] RadioButton proxy_mode_rule;
+        [GtkChild] RadioButton proxy_mode_global;
+        [GtkChild] RadioButton proxy_mode_direct;
+
+        construct {
             update_traffic.begin();
+
+            switch (Vars.config.mode) {
+                case "Global": proxy_mode_global.set_active(true); break;
+                case "Direct": proxy_mode_direct.set_active(true); break;
+                default: proxy_mode_rule.set_active(true); break;
+            }
         }
 
         async void update_traffic() {
@@ -97,15 +107,7 @@ namespace Gtklash.UI {
         }
 
         async void update_info() {
-            var message = new Soup.Message(
-                "GET",
-                "http://%s/configs".printf(Vars.config.external_controller)
-            );
-            session.queue_message(message, (session, message) => {
-                update_info.callback();
-            });
-            yield;
-
+            Soup.Message message = yield api_call(session, "GET", "/configs");
             if (message.status_code != Soup.Status.OK) {
                 return;
             }
@@ -146,6 +148,30 @@ namespace Gtklash.UI {
 
                 return Source.REMOVE;
             });
+        }
+
+        [GtkCallback]
+        private void switch_proxy_mode(ToggleButton btn) {
+            if (!btn.active)
+                return;
+
+            string mode;
+            switch (btn.name) {
+                case "proxy_mode_rule": mode =  "Rule"; break;
+                case "proxy_mode_global": mode =  "Global"; break;
+                case "proxy_mode_direct": mode =  "Direct"; break;
+                default: assert_not_reached();
+            }
+
+            if (mode == Vars.config.mode)
+                return;
+
+            Vars.config.mode = mode;
+            save_config();
+
+            api_call.begin(session, "PUT", "/configs", @"{
+                \"mode\": \"$mode\"
+            }");
         }
 
         public void on_show() {

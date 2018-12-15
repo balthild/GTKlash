@@ -1,6 +1,8 @@
+using Soup;
+
 namespace Gtklash {
     async void later(uint interval, int priority = GLib.Priority.DEFAULT) {
-        GLib.Timeout.add(interval, () => {
+        Timeout.add(interval, () => {
             later.callback();
             return false;
         }, priority);
@@ -47,5 +49,21 @@ namespace Gtklash {
             return "%lld KiB/s".printf(bytes / KB_BASE);
         else
             return "%lld Byte/s".printf(bytes);
+    }
+
+    async Message api_call(Session session, string method, string uri, string? body = null) {
+        string url = "http://%s%s".printf(Vars.config.external_controller, uri);
+        var message = new Message(method, url);
+
+        if (body != null) {
+            message.set_request("application/json", MemoryUse.COPY, body.data);
+        }
+
+        session.queue_message(message, (session, message) => {
+            api_call.callback();
+        });
+        yield;
+
+        return message;
     }
 }

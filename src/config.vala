@@ -90,14 +90,6 @@ namespace Gtklash {
 
         config.proxies.add(new Socks5("local-socks5", "127.0.0.1", 1080));
 
-        var proxy_group = ProxyGroup() {
-            name = "Proxy",
-            type = "select",
-            proxies = new LinkedList<string>()
-        };
-        proxy_group.proxies.add("local-socks5");
-        config.proxy_groups.add(proxy_group);
-
         return config;
     }
 
