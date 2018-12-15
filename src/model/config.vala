@@ -128,12 +128,12 @@ namespace Gtklash {
             }
             obj.set_array_member("Proxy", proxies);
 
+            // Proxy Groups
             var proxy_groups = new Json.Array();
             foreach (ProxyGroup group in this.proxy_groups) {
                 proxy_groups.add_object_element(group.serialize());
             }
 
-            // Proxy Groups
             var default_group = ProxyGroup() {
                 name = "Proxy",
                 type = "select",
@@ -147,6 +147,7 @@ namespace Gtklash {
 
             obj.set_array_member("Proxy Group", proxy_groups);
 
+            // Rules
             string[] rule_lines = rules.split("\n");
             var clash_rules = new Json.Array();
             foreach (string line in rule_lines) {

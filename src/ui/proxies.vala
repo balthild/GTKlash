@@ -52,15 +52,12 @@ namespace Gtklash.UI {
             Vars.config.active_proxy = name;
             save_config();
 
-            var call1 = api_call(session, "PUT", "/proxies/Proxy", @"{
+            yield api_call(session, "PUT", "/proxies/Proxy", @"{
                 \"name\": \"$name\"
             }");
-            var call2 = api_call(session, "PUT", "/proxies/GLOBAL", @"{
+            yield api_call(session, "PUT", "/proxies/GLOBAL", @"{
                 \"name\": \"$name\"
             }");
-
-            yield call1;
-            yield call2;
 
             active_proxy_item.set_active(false);
             active_proxy_item = selected;
