@@ -184,7 +184,7 @@ namespace Gtklash.UI {
         [GtkCallback]
         private void exit_app(Button _) {
             Vars.app.release();
-            Vars.app.active_window.close();
+            Vars.app.main_window.real_close();
         }
 
         public override void destroy() {

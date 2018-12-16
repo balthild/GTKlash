@@ -8,6 +8,6 @@ namespace Gtklash {
         public static Status clash_status = Status.LOADING;
         public static string clash_error_info = "";
 
-        public static Gtk.Application app;
+        public static App app;
     }
 }

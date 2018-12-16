@@ -8,7 +8,7 @@ namespace Gtklash {
     public class App : Gtk.Application {
         bool started = false;
 
-        UI.Window main_window;
+        public UI.Window main_window { get; protected set; }
 
         public App() {
             Object(

@@ -28,6 +28,11 @@ namespace Gtklash.UI {
             widget.on_show();
         }
 
+        public void real_close() {
+            delete_event.disconnect(hide_on_delete);
+            close();
+        }
+
         [GtkCallback]
         private void switch_content(ListBox _, ListBoxRow? row) {
             int new_active = row.get_index();
