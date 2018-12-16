@@ -16,30 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-extern string clash_run();
-extern string clash_update_all_config();
-extern void clash_set_config_home_dir(string path);
-
 int main(string[] args) {
-    Gtklash.init_config();
-
-    clash_set_config_home_dir(Gtklash.get_config_dir() + "/clash");
-    string result = clash_run();
-    if (result == "success") {
-        Gtklash.Vars.clash_status = Gtklash.Status.SUCCEEDED;
-    } else {
-        Gtklash.Vars.clash_status = Gtklash.Status.FAILED;
-        Gtklash.Vars.clash_error_info = result;
-    }
-
-    var app = new Gtklash.App();
-    app.activate.connect(() => {
-        var win = app.active_window;
-        if (win == null) {
-            win = new Gtklash.UI.Window(app);
-        }
-        win.present();
-    });
-
-    return app.run(args);
+    Gtklash.Vars.app = new Gtklash.App();
+    return Gtklash.Vars.app.run(args);
 }

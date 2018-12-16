@@ -15,6 +15,10 @@ namespace Gtklash.UI {
 
         public Window(Gtk.Application app) {
             Object(application: app);
+        }
+
+        construct {
+            delete_event.connect(hide_on_delete);
 
             foreach (Content widget in contents)
                 widget.expand = true;

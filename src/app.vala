@@ -1,5 +1,15 @@
+using AppIndicator;
+
+extern string clash_run();
+extern string clash_update_all_config();
+extern void clash_set_config_home_dir(string path);
+
 namespace Gtklash {
     public class App : Gtk.Application {
+        bool started = false;
+
+        UI.Window main_window;
+
         public App() {
             Object(
                 application_id: "org.gnome.Gtklash",
@@ -10,6 +20,34 @@ namespace Gtklash {
         protected override void activate() {
             base.activate();
 
+            if (!started) {
+                start_clash();
+                hold();
+
+                load_css();
+                // add_indicator();
+                main_window = new UI.Window(this);
+
+                started = true;
+            }
+
+            show_window();
+        }
+
+        public void start_clash() {
+            init_config();
+
+            clash_set_config_home_dir(get_config_dir() + "/clash");
+            string result = clash_run();
+            if (result == "success") {
+                Vars.clash_status = Status.SUCCEEDED;
+            } else {
+                Vars.clash_status = Status.FAILED;
+                Vars.clash_error_info = result;
+            }
+        }
+
+        public void load_css() {
             Gtk.CssProvider css_provider = new Gtk.CssProvider();
             css_provider.load_from_resource("/org/gnome/Gtklash/res/app.css");
             Gtk.StyleContext.add_provider_for_screen(
@@ -17,6 +55,45 @@ namespace Gtklash {
                 css_provider,
                 Gtk.STYLE_PROVIDER_PRIORITY_USER
             );
+        }
+
+        public void show_window() {
+            var win = get_active_window();
+            if (win == null) {
+                win = main_window;
+            }
+            win.present();
+        }
+
+        protected void add_indicator() {
+            // TODO
+            var indicator = new Indicator(
+                "Gtklash",
+                "Some messages.",
+                IndicatorCategory.APPLICATION_STATUS
+            );
+
+            indicator.set_status(IndicatorStatus.ACTIVE);
+            indicator.set_attention_icon("indicator-messages-new");
+
+            var menu = new Gtk.Menu();
+
+            var item = new Gtk.MenuItem.with_label("Foo");
+            item.activate.connect(() => {
+                indicator.set_status(IndicatorStatus.ATTENTION);
+            });
+            item.show();
+            menu.append(item);
+
+            var bar = item = new Gtk.MenuItem.with_label("Bar");
+            item.show();
+            item.activate.connect(() => {
+                indicator.set_status(IndicatorStatus.ACTIVE);
+            });
+            menu.append(item);
+
+            indicator.set_menu(menu);
+            indicator.set_secondary_activate_target(bar);
         }
     }
 }

@@ -245,6 +245,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="margin_left">8</property>
+                <signal name="clicked" handler="exit_app" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
