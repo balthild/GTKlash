@@ -9,5 +9,6 @@
     <file compressed="true">res/proxies.ui</file>
 
     <file compressed="true">res/proxy_item.ui</file>
+    <file compressed="true">res/proxy_edit_dialog.ui</file>
   </gresource>
 </gresources>

@@ -30,6 +30,7 @@
                   <object class="GtkListBox" id="proxy_list">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <signal name="row-selected" handler="proxy_row_selected" swapped="no"/>
                     <style>
                       <class name="data-list"/>
                     </style>
@@ -76,10 +77,11 @@
             <property name="can_focus">False</property>
             <property name="halign">start</property>
             <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="add_btn">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <signal name="clicked" handler="add_proxy" swapped="no"/>
                 <child>
                   <object class="GtkImage" id="image1">
                     <property name="visible">True</property>
@@ -98,10 +100,12 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="remove_btn">
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <signal name="clicked" handler="remove_proxy" swapped="no"/>
                 <child>
                   <object class="GtkImage" id="image2">
                     <property name="visible">True</property>
@@ -120,11 +124,12 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="edit_btn">
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="relief">none</property>
+                <signal name="clicked" handler="edit_proxy" swapped="no"/>
                 <child>
                   <object class="GtkImage">
                     <property name="visible">True</property>
@@ -153,11 +158,11 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton">
+          <object class="GtkButton" id="activate_btn">
             <property name="visible">True</property>
+            <property name="sensitive">False</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="relief">none</property>
             <signal name="clicked" handler="set_active_proxy" swapped="no"/>
             <child>
               <object class="GtkImage">

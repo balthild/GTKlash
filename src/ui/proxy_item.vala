@@ -3,9 +3,10 @@ using Gtk;
 namespace Gtklash.UI {
     [GtkTemplate(ui = "/org/gnome/Gtklash/res/proxy_item.ui")]
     public class ProxyItem : ListBoxRow {
-        bool is_group = false;
-        Proxy? proxy = null;
-        ProxyGroup? group = null;
+        public bool is_group { get; private set; }
+
+        public Proxy? proxy;
+        private ProxyGroup? group;
 
         [GtkChild] Box proxy_item_box;
 
@@ -15,7 +16,9 @@ namespace Gtklash.UI {
         VectorIcon active_indicator;
 
         public ProxyItem.from_proxy(Proxy proxy) {
+            this.is_group = false;
             this.proxy = proxy;
+            this.group = null;
 
             proxy_name.set_text(proxy.name);
             proxy_addr.set_text("%s:%hu".printf(proxy.server, proxy.port));
@@ -23,6 +26,7 @@ namespace Gtklash.UI {
 
         public ProxyItem.from_group(ProxyGroup group) {
             this.is_group = true;
+            this.proxy = null;
             this.group = group;
 
             proxy_name.set_text(group.name);
@@ -40,6 +44,14 @@ namespace Gtklash.UI {
 
         public string get_name() {
             return is_group ? group.name : proxy.name;
+        }
+
+        public Proxy get_proxy() {
+            return proxy;
+        }
+
+        public ProxyGroup get_group() {
+            return group;
         }
 
         public void set_active(bool active) {
