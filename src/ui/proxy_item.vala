@@ -5,7 +5,7 @@ namespace Gtklash.UI {
     public class ProxyItem : ListBoxRow {
         public bool is_group { get; private set; }
 
-        public Proxy? proxy;
+        private Proxy? proxy;
         private ProxyGroup? group;
 
         [GtkChild] Box proxy_item_box;
@@ -13,7 +13,7 @@ namespace Gtklash.UI {
         [GtkChild] Label proxy_name;
         [GtkChild] Label proxy_addr;
 
-        VectorIcon active_indicator;
+        [GtkChild] Image active_indicator;
 
         public ProxyItem.from_proxy(Proxy proxy) {
             this.is_group = false;
@@ -33,15 +33,6 @@ namespace Gtklash.UI {
             proxy_addr.set_text("Proxy Group");
         }
 
-        construct {
-            active_indicator = new VectorIcon("done");
-            active_indicator.set_valign(Align.CENTER);
-            active_indicator.set_opacity(0.4);
-            active_indicator.set_margin_end(16);
-
-            proxy_item_box.add(active_indicator);
-        }
-
         public string get_name() {
             return is_group ? group.name : proxy.name;
         }
@@ -50,8 +41,25 @@ namespace Gtklash.UI {
             return proxy;
         }
 
+        public void set_proxy(Proxy proxy) {
+            if (is_group)
+                return;
+
+            this.proxy = proxy;
+            proxy_name.set_text(proxy.name);
+            proxy_addr.set_text("%s:%hu".printf(proxy.server, proxy.port));
+        }
+
         public ProxyGroup get_group() {
             return group;
+        }
+
+        public void set_group(ProxyGroup group) {
+            if (!is_group)
+                return;
+
+            this.group = group;
+            proxy_name.set_text(group.name);
         }
 
         public void set_active(bool active) {

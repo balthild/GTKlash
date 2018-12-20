@@ -23,12 +23,12 @@ namespace Gtklash {
             field_associations["proxy_socks5_tls"] = "proxy_socks5_skip_cert_verify";
         }
 
-        public bool is_group = false;
-        Proxy? proxy = null;
-        ProxyGroup? group = null;
+        bool is_group = false;
+        bool is_new = false;
 
         public signal void save_proxy(Proxy? proxy, ProxyGroup? group);
 
+        [GtkChild] Box type_radio;
         [GtkChild] RadioButton type_proxy;
         [GtkChild] RadioButton type_group;
 
@@ -41,12 +41,25 @@ namespace Gtklash {
 
         [GtkChild] Entry proxy_name;
         [GtkChild] Entry proxy_server;
-        [GtkChild] Entry proxy_port;
+        [GtkChild] SpinButton proxy_port;
 
         [GtkChild] Entry proxy_ss_password;
         [GtkChild] ComboBox proxy_ss_cipher;
         [GtkChild] Switch proxy_ss_obfs_tls;
         [GtkChild] Entry proxy_ss_obfs_host;
+
+        [GtkChild] Entry proxy_vmess_uuid;
+        [GtkChild] SpinButton proxy_vmess_alter_id;
+        [GtkChild] ComboBox proxy_vmess_cipher;
+        [GtkChild] Switch proxy_vmess_ws;
+        [GtkChild] Entry proxy_vmess_ws_path;
+        [GtkChild] Switch proxy_vmess_tls;
+        [GtkChild] Switch proxy_vmess_skip_cert_verify;
+
+        [GtkChild] Entry proxy_socks5_username;
+        [GtkChild] Entry proxy_socks5_password;
+        [GtkChild] Switch proxy_socks5_tls;
+        [GtkChild] Switch proxy_socks5_skip_cert_verify;
 
         public ProxyEditDialog() {
             Object(use_header_bar: 1);
@@ -54,30 +67,24 @@ namespace Gtklash {
 
         construct {
             set_modal(true);
+            change_visible_fields("ss");
         }
 
         public void show_proxy(Proxy proxy) {
-            this.is_group = false;
-            this.group = null;
-            this.proxy = proxy;
+            is_group = false;
+            is_new = false;
             show_form();
         }
 
         public void show_group(ProxyGroup group) {
-            this.is_group = true;
-            this.proxy = null;
-            this.group = group;
+            is_group = true;
+            is_new = false;
             show_form();
         }
 
         public void show_new() {
-            this.is_group = false;
-            this.group = null;
-            this.proxy = new Shadowsocks(
-                "", "", 8388,
-                "AEAD_CHACHA20_POLY1305", "",
-                null, null
-            );
+            is_group = false;
+            is_new = true;
             show_form();
         }
 
@@ -85,7 +92,7 @@ namespace Gtklash {
             set_transient_for(Vars.app.main_window);
 
             // TODO: Update fields
-            change_visible_fields("ss");
+            type_radio.set_visible(is_new);
 
             show();
         }
@@ -97,9 +104,64 @@ namespace Gtklash {
 
         [GtkCallback]
         private void submit_edit(Button btn) {
-            // TODO
-            // save_proxy();
             hide();
+
+            if (is_group)
+                save_proxy(null, construct_group_data());
+            else
+                save_proxy(construct_proxy_data(), null);
+        }
+
+        private Proxy construct_proxy_data() {
+            // TODO: Validate fields
+            
+            if (proxy_type_ss.active) {
+                return new Shadowsocks(
+                    proxy_name.text,
+                    proxy_server.text,
+                    (ushort) proxy_port.value,
+                    proxy_ss_cipher.active_id,
+                    proxy_ss_password.text,
+                    proxy_ss_obfs_tls.active ? "tls" : null,
+                    proxy_ss_obfs_host.text
+                );
+            } else if (proxy_type_vmess.active) {
+                return new Vmess(
+                    proxy_name.text,
+                    proxy_server.text,
+                    (ushort) proxy_port.value,
+                    proxy_vmess_uuid.text,
+                    (ushort) proxy_vmess_alter_id.text,
+                    proxy_vmess_cipher.active_id,
+                    proxy_vmess_tls.active,
+                    proxy_vmess_skip_cert_verify.active,
+                    proxy_vmess_ws.active ? "ws" : null,
+                    proxy_vmess_ws_path.text
+                );
+            } else if (proxy_type_socks5.active) {
+                return new Socks5(
+                    proxy_name.text,
+                    proxy_server.text,
+                    (ushort) proxy_port.value,
+                    proxy_socks5_tls.active,
+                    proxy_socks5_skip_cert_verify.active
+                );
+            } else if (proxy_type_http.active) {
+                return new HTTP(
+                    proxy_name.text,
+                    proxy_server.text,
+                    (ushort) proxy_port.value,
+                    proxy_socks5_tls.active,
+                    proxy_socks5_skip_cert_verify.active
+                );
+            } else {
+                assert_not_reached();
+            }
+        }
+
+        private ProxyGroup construct_group_data() {
+            // TODO
+            return ProxyGroup();
         }
 
         private void change_visible_fields(string type) {

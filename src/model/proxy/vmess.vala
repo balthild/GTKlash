@@ -17,7 +17,7 @@ namespace Gtklash {
             string server,
             ushort port,
             string uuid,
-            uint alter_id,
+            ushort alter_id,
             string cipher,
             bool tls = false,
             bool skip_cert_verify = false,

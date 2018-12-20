@@ -21,6 +21,7 @@ gtklash_sources = [
   'model/proxy/shadowsocks.vala',
   'model/proxy/vmess.vala',
   'model/proxy/socks5.vala',
+  'model/proxy/http.vala',
 ]
 
 gtklash_deps = [

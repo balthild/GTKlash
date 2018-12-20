@@ -17,9 +17,12 @@ namespace Gtklash.UI {
         [GtkChild] Button edit_btn;
         [GtkChild] Button activate_btn;
 
+        ProxyItem? editing = null;
+
         construct {
             proxy_list.set_header_func(list_separator_func);
             init_proxy_list();
+            edit_dialog.save_proxy.connect(save_proxy);
         }
 
         void init_proxy_list() {
@@ -81,6 +84,7 @@ namespace Gtklash.UI {
 
         [GtkCallback]
         private void add_proxy(Button btn) {
+            editing = null;
             edit_dialog.show_new();
         }
 
@@ -94,10 +98,56 @@ namespace Gtklash.UI {
             if (selected == null)
                 return;
 
+            editing = selected;
+
             if (selected.is_group) 
                 edit_dialog.show_group(selected.get_group());
             else
                 edit_dialog.show_proxy(selected.get_proxy());
+        }
+
+        void save_proxy(Proxy? proxy, ProxyGroup? group) {
+            if (editing == null) {
+                add_new_proxy(proxy, group);
+                return;
+            }
+
+            if (editing.is_group) {
+                ProxyGroup old = editing.get_group();
+
+                int i = Vars.config.proxy_groups.index_of(old);
+                Vars.config.proxy_groups[i] = group;
+
+                editing.set_group(group);
+            } else {
+                Proxy old = editing.get_proxy();
+
+                int i = Vars.config.proxies.index_of(old);
+                Vars.config.proxies[i] = proxy;
+
+                editing.set_proxy(proxy);
+            }
+
+            save_config();
+            editing = null;
+        }
+
+        void add_new_proxy(Proxy? proxy, ProxyGroup? group) {
+            if (proxy == null) {
+                Vars.config.proxy_groups.add(group);
+
+                var row = new ProxyItem.from_group(group);
+                proxy_list.insert(row, Vars.config.proxy_groups.size - 1);
+                row.show();
+            } else {
+                Vars.config.proxies.add(proxy);
+
+                var row = new ProxyItem.from_proxy(proxy);
+                proxy_list.insert(row, -1);
+                row.show();
+            }
+
+            save_config();
         }
 
         public void on_show() {}

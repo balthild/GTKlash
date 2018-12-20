@@ -91,6 +91,7 @@ namespace Gtklash {
                     case "ss": proxy = new Shadowsocks.deserialize(proxy_obj); break;
                     case "socks5": proxy = new Socks5.deserialize(proxy_obj); break;
                     case "vmess": proxy = new Vmess.deserialize(proxy_obj); break;
+                    case "http": proxy = new HTTP.deserialize(proxy_obj); break;
                     default: assert_not_reached();
                 }
                 config.proxies.add(proxy);

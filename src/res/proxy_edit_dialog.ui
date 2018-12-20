@@ -18,7 +18,7 @@
   </object>
   <object class="GtkListStore" id="ss_ciphers">
     <columns>
-      <!-- column-name name -->
+      <!-- column-name id -->
       <column type="gchararray"/>
     </columns>
     <data>
@@ -144,7 +144,7 @@
             <property name="margin_bottom">16</property>
             <property name="orientation">vertical</property>
             <child>
-              <object class="GtkBox">
+              <object class="GtkBox" id="type_radio">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">center</property>
@@ -395,6 +395,7 @@
                     <property name="can_focus">False</property>
                     <property name="model">ss_ciphers</property>
                     <property name="active">0</property>
+                    <property name="id_column">0</property>
                     <child>
                       <object class="GtkCellRendererText"/>
                       <attributes>
@@ -586,6 +587,7 @@
                     <property name="can_focus">False</property>
                     <property name="model">vmess_ciphers</property>
                     <property name="active">0</property>
+                    <property name="id_column">0</property>
                     <child>
                       <object class="GtkCellRendererText"/>
                       <attributes>
