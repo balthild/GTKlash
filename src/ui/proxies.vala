@@ -12,7 +12,6 @@ namespace Gtklash.UI {
 
         [GtkChild] ListBox proxy_list;
 
-        [GtkChild] Button add_btn;
         [GtkChild] Button remove_btn;
         [GtkChild] Button edit_btn;
         [GtkChild] Button activate_btn;

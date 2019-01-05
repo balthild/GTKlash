@@ -8,8 +8,6 @@ namespace Gtklash.UI {
         private Proxy? proxy;
         private ProxyGroup? group;
 
-        [GtkChild] Box proxy_item_box;
-
         [GtkChild] Label proxy_name;
         [GtkChild] Label proxy_addr;
 

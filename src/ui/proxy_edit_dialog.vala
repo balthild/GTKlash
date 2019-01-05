@@ -24,11 +24,10 @@ namespace Gtklash {
         }
 
         bool is_group = false;
-        bool is_new = false;
 
         public signal void save_proxy(Proxy? proxy, ProxyGroup? group);
 
-        [GtkChild] Box type_radio;
+        [GtkChild] Box type_radios_box;
         [GtkChild] RadioButton type_proxy;
         [GtkChild] RadioButton type_group;
 
@@ -72,27 +71,24 @@ namespace Gtklash {
 
         public void show_proxy(Proxy proxy) {
             is_group = false;
-            is_new = false;
-            show_form();
+            show_form(false);
         }
 
         public void show_group(ProxyGroup group) {
             is_group = true;
-            is_new = false;
-            show_form();
+            show_form(false);
         }
 
         public void show_new() {
             is_group = false;
-            is_new = true;
-            show_form();
+            show_form(true);
         }
 
-        void show_form() {
+        void show_form(bool is_new) {
             set_transient_for(Vars.app.main_window);
 
             // TODO: Update fields
-            type_radio.set_visible(is_new);
+            type_radios_box.set_visible(is_new);
 
             show();
         }
@@ -143,6 +139,8 @@ namespace Gtklash {
                     proxy_name.text,
                     proxy_server.text,
                     (ushort) proxy_port.value,
+                    proxy_socks5_username.text,
+                    proxy_socks5_password.text,
                     proxy_socks5_tls.active,
                     proxy_socks5_skip_cert_verify.active
                 );
@@ -151,6 +149,8 @@ namespace Gtklash {
                     proxy_name.text,
                     proxy_server.text,
                     (ushort) proxy_port.value,
+                    proxy_socks5_username.text,
+                    proxy_socks5_password.text,
                     proxy_socks5_tls.active,
                     proxy_socks5_skip_cert_verify.active
                 );

@@ -144,7 +144,7 @@
             <property name="margin_bottom">16</property>
             <property name="orientation">vertical</property>
             <child>
-              <object class="GtkBox" id="type_radio">
+              <object class="GtkBox" id="type_radios_box">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">center</property>
