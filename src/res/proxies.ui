@@ -164,7 +164,7 @@
             <property name="sensitive">False</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <signal name="clicked" handler="activete_btn_clicked" swapped="no"/>
+            <signal name="clicked" handler="activate_btn_clicked" swapped="no"/>
             <child>
               <object class="GtkImage">
                 <property name="visible">True</property>

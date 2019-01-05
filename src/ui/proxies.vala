@@ -95,24 +95,22 @@ namespace Gtklash.UI {
 
             proxy_list.remove(selected);
 
-            string name;
             if (selected.is_group) {
                 ProxyGroup group = selected.get_group();
                 Vars.config.proxy_groups.remove(group);
-                name = group.name;
             } else {
                 Proxy proxy = selected.get_proxy();
                 Vars.config.proxies.remove(proxy);
-                name = proxy.name;
             }
 
+            string name = selected.get_name();
             foreach (ProxyGroup group in Vars.config.proxy_groups) {
                 group.proxies.remove(name);
             }
 
             if (name == Vars.config.active_proxy) {
                 var i = Vars.config.proxy_groups.size;
-                active_proxy_item = proxy_list.get_row_at_index(i);
+                active_proxy_item = proxy_list.get_row_at_index(i) as ProxyItem;
                 active_proxy_item.set_active(true);
 
                 save_config();
@@ -132,7 +130,7 @@ namespace Gtklash.UI {
 
             editing = selected;
 
-            if (selected.is_group) 
+            if (selected.is_group)
                 edit_dialog.show_group(selected.get_group());
             else
                 edit_dialog.show_proxy(selected.get_proxy());
