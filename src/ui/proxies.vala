@@ -50,23 +50,23 @@ namespace Gtklash.UI {
             }
         }
 
+        private async void set_active_proxy(string name) {
+            Vars.config.active_proxy = name;
+            save_config();
+
+            string json = """{"name": "%s"}""".printf(name);
+            yield api_call(session, "PUT", "/proxies/Proxy", json);
+            yield api_call(session, "PUT", "/proxies/GLOBAL", json);
+        }
+
         [GtkCallback]
-        private async void set_active_proxy(Button btn) {
+        private async void activate_btn_clicked(Button btn) {
             ProxyItem selected = proxy_list.get_selected_row() as ProxyItem;
             if (selected == null || selected == active_proxy_item)
                 return;
 
             string name = selected.get_name();
-
-            Vars.config.active_proxy = name;
-            save_config();
-
-            yield api_call(session, "PUT", "/proxies/Proxy", @"{
-                \"name\": \"$name\"
-            }");
-            yield api_call(session, "PUT", "/proxies/GLOBAL", @"{
-                \"name\": \"$name\"
-            }");
+            set_active_proxy(name);
 
             active_proxy_item.set_active(false);
             active_proxy_item = selected;
@@ -95,15 +95,33 @@ namespace Gtklash.UI {
 
             proxy_list.remove(selected);
 
+            string name;
             if (selected.is_group) {
                 ProxyGroup group = selected.get_group();
                 Vars.config.proxy_groups.remove(group);
+                name = group.name;
             } else {
                 Proxy proxy = selected.get_proxy();
                 Vars.config.proxies.remove(proxy);
+                name = proxy.name;
             }
 
-            save_config();
+            foreach (ProxyGroup group in Vars.config.proxy_groups) {
+                group.proxies.remove(name);
+            }
+
+            if (name == Vars.config.active_proxy) {
+                var i = Vars.config.proxy_groups.size;
+                active_proxy_item = proxy_list.get_row_at_index(i);
+                active_proxy_item.set_active(true);
+
+                save_config();
+
+                clash_reload_config();
+                set_active_proxy(active_proxy_item.get_name());
+            } else {
+                save_config();
+            }
         }
 
         [GtkCallback]

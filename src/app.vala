@@ -1,9 +1,5 @@
 using AppIndicator;
 
-extern string clash_run();
-extern string clash_update_all_config();
-extern void clash_set_config_home_dir(string path);
-
 namespace Gtklash {
     public class App : Gtk.Application {
         bool started = false;
@@ -20,7 +16,7 @@ namespace Gtklash {
         protected override void activate() {
             base.activate();
 
-            if (!started) {
+            if (!started) {       
                 start_clash();
                 hold();
 
@@ -32,19 +28,6 @@ namespace Gtklash {
             }
 
             show_window();
-        }
-
-        public void start_clash() {
-            init_config();
-
-            clash_set_config_home_dir(get_config_dir() + "/clash");
-            string result = clash_run();
-            if (result == "success") {
-                Vars.clash_status = Status.SUCCEEDED;
-            } else {
-                Vars.clash_status = Status.FAILED;
-                Vars.clash_error_info = result;
-            }
         }
 
         public void load_css() {

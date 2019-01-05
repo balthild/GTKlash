@@ -32,6 +32,7 @@ namespace Gtklash {
         [GtkChild] RadioButton type_group;
 
         [GtkChild] Grid proxy_fields;
+        [GtkChild] Grid group_fields;
 
         [GtkChild] RadioButton proxy_type_ss;
         [GtkChild] RadioButton proxy_type_vmess;
@@ -177,6 +178,22 @@ namespace Gtklash {
 
                 widget.set_visible(row >= rows.begin && row <= rows.end);
             }
+        }
+
+        [GtkCallback]
+        private void type_toggled(ToggleButton btn) {
+            if (!btn.active)
+                return;
+
+            // Workaround for the issue that the dialog is positioned
+            // incorrectly after it is resized.
+            set_visible(false);
+
+            proxy_fields.set_visible(btn.name == "type_proxy");
+            group_fields.set_visible(btn.name == "type_group");
+
+            // ...as well.
+            set_visible(true);
         }
 
         [GtkCallback]
