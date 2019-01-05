@@ -131,7 +131,7 @@ namespace Gtklash {
                     proxy_server.text,
                     (ushort) proxy_port.value,
                     proxy_vmess_uuid.text,
-                    (ushort) proxy_vmess_alter_id.text,
+                    (ushort) proxy_vmess_alter_id.value,
                     proxy_vmess_cipher.active_id,
                     proxy_vmess_tls.active,
                     proxy_vmess_skip_cert_verify.active,

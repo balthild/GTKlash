@@ -88,9 +88,24 @@ namespace Gtklash.UI {
             edit_dialog.show_new();
         }
 
-        // TODO
         [GtkCallback]
-        private void remove_proxy(Button btn) {}
+        private void remove_proxy(Button btn) {
+            ProxyItem selected = proxy_list.get_selected_row() as ProxyItem;
+            if (selected == null)
+                return;
+
+            proxy_list.remove(selected);
+
+            if (selected.is_group) {
+                ProxyGroup group = selected.get_group();
+                Vars.config.proxy_groups.remove(group);
+            } else {
+                Proxy proxy = selected.get_proxy();
+                Vars.config.proxies.remove(proxy);
+            }
+
+            save_config();
+        }
 
         [GtkCallback]
         private void edit_proxy(Button btn) {
