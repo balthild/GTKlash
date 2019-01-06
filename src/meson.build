@@ -11,6 +11,7 @@ gtklash_sources = [
   'ui/content.vala',
   'ui/overview.vala',
   'ui/proxies.vala',
+  'ui/rules.vala',
 
   'ui/vector_icon.vala',
   'ui/proxy_item.vala',
@@ -28,6 +29,7 @@ gtklash_sources = [
 gtklash_deps = [
   dependency('gio-2.0', version: '>= 2.50'),
   dependency('gtk+-3.0', version: '>= 3.22'),
+  dependency('gtksourceview-4', version: '>= 4.0'),
   dependency('librsvg-2.0'),
   dependency('appindicator3-0.1'),
   dependency('gee-0.8'),

@@ -1,11 +1,12 @@
 using Gtk;
 
 namespace Gtklash.UI {
-    [GtkTemplate(ui = "/org/gnome/Gtklash/res/window.ui")]
+    [GtkTemplate(ui = "/org/gnome/Gtklash/res/ui/window.ui")]
     public class Window : ApplicationWindow {
         Content[] contents = {
             new Gtklash.UI.Overview(),
             new Gtklash.UI.Proxies(),
+            new Gtklash.UI.Rules(),
         };
 
         int active = 0;

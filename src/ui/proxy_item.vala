@@ -1,7 +1,7 @@
 using Gtk;
 
 namespace Gtklash.UI {
-    [GtkTemplate(ui = "/org/gnome/Gtklash/res/proxy_item.ui")]
+    [GtkTemplate(ui = "/org/gnome/Gtklash/res/ui/proxy_item.ui")]
     public class ProxyItem : ListBoxRow {
         public bool is_group { get; private set; }
 

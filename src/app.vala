@@ -16,7 +16,7 @@ namespace Gtklash {
         protected override void activate() {
             base.activate();
 
-            if (!started) {       
+            if (!started) {
                 start_clash();
                 hold();
 

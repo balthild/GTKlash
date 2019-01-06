@@ -39,3 +39,11 @@ if compile_schemas.found()
     args: ['--strict', '--dry-run', meson.current_source_dir()]
   )
 endif
+
+install_data(['clashrule.lang', 'clashrule-light.xml'],
+  install_dir: join_paths(
+    get_option('datadir'),
+    meson.project_name(),
+    'gtksourceview-4'
+  )
+)

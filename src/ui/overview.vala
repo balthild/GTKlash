@@ -1,7 +1,7 @@
 using Gtk;
 
 namespace Gtklash.UI {
-    [GtkTemplate(ui = "/org/gnome/Gtklash/res/overview.ui")]
+    [GtkTemplate(ui = "/org/gnome/Gtklash/res/ui/overview.ui")]
     public class Overview : Box, Content {
         bool shown = false;
         bool destroyed = false;

@@ -2,7 +2,7 @@ using Gtk;
 using Gee;
 
 namespace Gtklash.UI {
-    [GtkTemplate(ui = "/org/gnome/Gtklash/res/proxies.ui")]
+    [GtkTemplate(ui = "/org/gnome/Gtklash/res/ui/proxies.ui")]
     public class Proxies : Box, Content {
         Soup.Session session = new Soup.Session();
 

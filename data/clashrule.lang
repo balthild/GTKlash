@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file is a part of GtkSourceView originally. -->
+<language id="clashrule" name=".clashrule" version="2.0" _section="Other">
+  <metadata>
+    <property name="mimetypes">text/x-clash-rule</property>
+    <property name="globs">*.clashrule</property>
+    <property name="line-comment-start">#</property>
+  </metadata>
+
+  <styles>
+    <style id="comment" name="Comment"/>
+    <style id="type" name="Type"/>
+    <style id="action" name="Action"/>
+    <style id="adapter" name="Adapter"/>
+    <style id="payload" name="Payload"/>
+  </styles>
+
+  <definitions>
+    <context id="comment" style-ref="comment" end-at-line-end="true" class="comment" class-disabled="no-spell-check">
+      <start>#</start>
+    </context>
+
+    <define-regex id="type">DOMAIN-SUFFIX|DOMAIN-KEYWORD|DOMAIN|IP-CIDR|GEOIP</define-regex>
+    <define-regex id="action">DIRECT|REJECT|Proxy</define-regex>
+    <define-regex id="adapter">[^#]+</define-regex>
+
+    <context id="line">
+      <match>^\s*(\%{type}),(.+),((\%{action})|(\%{adapter}))\s*($|(#.*$))</match>
+      <include>
+        <context sub-pattern="1" style-ref="type"/>
+        <context sub-pattern="2" style-ref="payload"/>
+        <context sub-pattern="4" style-ref="action"/>
+        <context sub-pattern="5" style-ref="adapter"/>
+        <context sub-pattern="7" style-ref="comment"/>
+      </include>
+    </context>
+
+    <context id="line-final">
+      <match>^\s*((MATCH)|(FINAL),?),((\%{action})|(\%{adapter}))\s*($|(#.*$))</match>
+      <include>
+        <context sub-pattern="2" style-ref="type"/>
+        <context sub-pattern="3" style-ref="type"/>
+        <context sub-pattern="5" style-ref="action"/>
+        <context sub-pattern="6" style-ref="adapter"/>
+        <context sub-pattern="8" style-ref="comment"/>
+      </include>
+    </context>
+
+    <context id="clashrule" class="no-spell-check">
+      <include>
+        <context ref="comment"/>
+        <context ref="line"/>
+        <context ref="line-final"/>
+      </include>
+    </context>
+  </definitions>
+</language>

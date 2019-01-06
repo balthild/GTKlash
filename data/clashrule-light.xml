@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file is a part of GtkSourceView originally. -->
+<style-scheme id="clashrule-light" _name="Clash Rule Light" version="1.0">
+  <author>Balthild</author>
+  <_description>The gtksourceview color scheme for GTKlash.</_description>
+
+  <!-- Global Settings -->
+  <style name="current-line" background="#eeeeec"/>
+  <style name="current-line-number" background="#eeeeec"/>
+  <style name="draw-spaces" foreground="#babdb6"/>
+  <style name="background-pattern" background="#f3f3f3"/>
+
+  <!-- Right Margin -->
+  <style name="right-margin" foreground="#000000" background="#000000"/>
+
+  <!-- Clash Rules -->
+  <style name="clashrule:comment" foreground="#6A737D"/>
+  <style name="clashrule:type" foreground="#6F42C1"/>
+  <style name="clashrule:action" foreground="#005CC5"/>
+  <style name="clashrule:adapter" foreground="#06989A"/>
+  <style name="clashrule:payload" foreground="#718C00"/>
+</style-scheme>

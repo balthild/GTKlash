@@ -4,7 +4,7 @@ using Gee;
 namespace Gtklash {
     private struct FieldRows { int begin; int end; }
 
-    [GtkTemplate(ui = "/org/gnome/Gtklash/res/proxy_edit_dialog.ui")]
+    [GtkTemplate(ui = "/org/gnome/Gtklash/res/ui/proxy_edit_dialog.ui")]
     class ProxyEditDialog : Dialog {
         static HashMap<string, FieldRows?> proxy_type_rows;
         static HashMultiMap<string, string> field_associations;
@@ -111,7 +111,7 @@ namespace Gtklash {
 
         private Proxy construct_proxy_data() {
             // TODO: Validate fields
-            
+
             if (proxy_type_ss.active) {
                 return new Shadowsocks(
                     proxy_name.text,

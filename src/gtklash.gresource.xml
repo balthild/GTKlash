@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/org/gnome/Gtklash">
-    <file compressed="true">res/app.css</file>
-    <file compressed="true">res/img/icon_done.svg</file>
+    <file compressed="true">res/default.clashrule</file>
 
-    <file compressed="true">res/window.ui</file>
-    <file compressed="true">res/overview.ui</file>
-    <file compressed="true">res/proxies.ui</file>
+    <file>res/app.css</file>
+    <file>res/img/icon_done.svg</file>
 
-    <file compressed="true">res/proxy_item.ui</file>
-    <file compressed="true">res/proxy_edit_dialog.ui</file>
+    <file compressed="true">res/ui/window.ui</file>
+    <file compressed="true">res/ui/overview.ui</file>
+    <file compressed="true">res/ui/proxies.ui</file>
+    <file compressed="true">res/ui/rules.ui</file>
+
+    <file compressed="true">res/ui/proxy_item.ui</file>
+    <file compressed="true">res/ui/proxy_edit_dialog.ui</file>
   </gresource>
 </gresources>

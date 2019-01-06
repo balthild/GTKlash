@@ -66,4 +66,14 @@ namespace Gtklash {
 
         return message;
     }
+
+    string get_mono_font() {
+        GLib.Settings settings = new GLib.Settings("org.gnome.desktop.interface");
+        string font_name = settings.get_string("monospace-font-name");
+
+        if (font_name == "")
+            return "Monospace";
+        else
+            return font_name;
+    }
 }
