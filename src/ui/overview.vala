@@ -4,7 +4,7 @@ namespace Gtklash.UI {
     [GtkTemplate(ui = "/org/gnome/Gtklash/res/ui/overview.ui")]
     public class Overview : Box, Content {
         bool shown = false;
-        bool destroyed = false;
+        bool dead = false;
 
         Soup.Session session = new Soup.Session();
 
@@ -37,7 +37,7 @@ namespace Gtklash.UI {
             while (true) {
                 yield later(200);
 
-                if (destroyed)
+                if (dead)
                     return;
 
                 if (!shown)
@@ -61,7 +61,7 @@ namespace Gtklash.UI {
 
                 string line;
                 while ((line = yield data_stream.read_line_async()) != null) {
-                    if (destroyed)
+                    if (dead)
                         return;
 
                     if (!shown)
@@ -189,7 +189,7 @@ namespace Gtklash.UI {
 
         public override void destroy() {
             base.destroy();
-            destroyed = true;
+            dead = true;
         }
 
         public void on_show() {

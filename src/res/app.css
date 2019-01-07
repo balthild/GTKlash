@@ -55,3 +55,13 @@
     margin-right: 12px;
     opacity: 0.7;
 }
+
+#editor.editor-light {
+    /* Current line number */
+    background-color: #EAEAEC;
+}
+
+#editor.editor-dark {
+    /* Current line number */
+    background-color: #3F4550;
+}

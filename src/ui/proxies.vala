@@ -66,7 +66,7 @@ namespace Gtklash.UI {
                 return;
 
             string name = selected.get_name();
-            set_active_proxy(name);
+            yield set_active_proxy(name);
 
             active_proxy_item.set_active(false);
             active_proxy_item = selected;
@@ -116,7 +116,7 @@ namespace Gtklash.UI {
                 save_config();
 
                 clash_reload_config();
-                set_active_proxy(active_proxy_item.get_name());
+                set_active_proxy.begin(active_proxy_item.get_name());
             } else {
                 save_config();
             }

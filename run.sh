@@ -3,6 +3,7 @@
 mkdir -p $HOME/.local/share/gtklash/gtksourceview-4/
 cp -f data/clashrule.lang $HOME/.local/share/gtklash/gtksourceview-4/
 cp -f data/clashrule-light.xml $HOME/.local/share/gtklash/gtksourceview-4/
+cp -f data/clashrule-dark.xml $HOME/.local/share/gtklash/gtksourceview-4/
 
 if [ "$1" = "--clean" ]; then
     rm -rf build subprojects/libclash/clash.{a,h}

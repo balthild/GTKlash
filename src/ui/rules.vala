@@ -6,11 +6,16 @@ namespace Gtklash.UI {
         private static SourceLanguageManager lang_manager;
         private static SourceStyleSchemeManager scheme_manager;
 
+        private static SourceStyleScheme light_scheme;
+        private static SourceStyleScheme dark_scheme;
+
+        private static SourceLanguage rule_lang;
+
         static construct {
             lang_manager = SourceLanguageManager.get_default();
             scheme_manager = SourceStyleSchemeManager.get_default();
 
-            string[] old_lang_paths = lang_manager.get_search_path();
+            unowned string[] old_lang_paths = lang_manager.get_search_path();
             string[] new_lang_paths = {};
             foreach (var path in old_lang_paths) {
                 new_lang_paths += path;
@@ -29,9 +34,18 @@ namespace Gtklash.UI {
             new_lang_paths += path;
 
             lang_manager.set_search_path(new_lang_paths);
+
+            light_scheme = scheme_manager.get_scheme("clashrule-light");
+            dark_scheme = scheme_manager.get_scheme("clashrule-dark");
+            rule_lang = lang_manager.get_language("clashrule");
         }
 
-        [GtkChild] SourceView editor;
+        bool dark = false;
+
+        weak SourceBuffer editor_buffer;
+
+        [GtkChild]
+        SourceView editor;
 
         construct {
             var font = Pango.FontDescription.from_string(get_mono_font());
@@ -39,19 +53,28 @@ namespace Gtklash.UI {
             // e.g. Gtk.CssProvider.load_from_data("...");
             editor.override_font(font);
 
-            var scheme = scheme_manager.get_scheme("clashrule-light");
-            var lang = lang_manager.get_language("clashrule");
+            editor_buffer = editor.get_buffer() as SourceBuffer;
 
-            weak SourceBuffer buffer = editor.get_buffer() as SourceBuffer;
-            buffer.undo_manager.begin_not_undoable_action();
-            buffer.style_scheme = scheme;
-            buffer.language = lang;
-            buffer.highlight_syntax = true;
-            buffer.text = Vars.config.rules;
-            buffer.undo_manager.end_not_undoable_action();
+            editor_buffer.style_scheme = light_scheme;
+            editor_buffer.language = rule_lang;
+            editor_buffer.highlight_syntax = true;
+
+            editor_buffer.undo_manager.begin_not_undoable_action();
+            editor_buffer.text = Vars.config.rules;
+            editor_buffer.undo_manager.end_not_undoable_action();
         }
 
-        public void on_show() {}
+        public void on_show() {
+            if (dark != Vars.config.dark_editor) {
+                dark = Vars.config.dark_editor;
+                editor_buffer.style_scheme = dark ? dark_scheme : light_scheme;
+
+                StyleContext context = editor.get_style_context();
+                context.remove_class(dark ? "editor-light" : "editor-dark");
+                context.add_class(dark ? "editor-dark" : "editor-light");
+            }
+        }
+
         public void on_hide() {}
     }
 }

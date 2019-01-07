@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file is a part of GtkSourceView originally. -->
+<style-scheme id="clashrule-dark" _name="Clash Rule Dark" version="1.0">
+  <author>Balthild</author>
+  <_description>The dark gtksourceview color scheme for GTKlash. Derived from Atom One Theme.</_description>
+
+  <!-- Global Settings -->
+  <style name="text" foreground="#ABB2BF" background="#282C33"/>
+  <!--<style name="selection" foreground="#24292E" background="#DCDCDC"/>-->
+  <style name="selection" foreground="#24292E" background="#FFFFFF"/>
+  <style name="cursor" foreground="#FFFFFF"/>
+  <style name="line-numbers" foreground="#8F96A3" background="#343942"/>
+  <style name="current-line" background="#343942"/>
+  <style name="current-line-number" foreground="#B9BFCA" background="#3F4550"/>
+  <style name="draw-spaces" foreground="#BABDB6"/>
+  <style name="background-pattern" background="#F3F3F3"/>
+
+  <!-- Clash Rules -->
+  <style name="clashrule:comment" foreground="#8F96A3"/>
+  <style name="clashrule:type" foreground="#C678DD"/>
+  <style name="clashrule:action" foreground="#61AEEE"/>
+  <style name="clashrule:adapter" foreground="#"/>
+  <style name="clashrule:payload" foreground="#98C379"/>
+</style-scheme>

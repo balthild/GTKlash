@@ -2,16 +2,18 @@
 <!-- This file is a part of GtkSourceView originally. -->
 <style-scheme id="clashrule-light" _name="Clash Rule Light" version="1.0">
   <author>Balthild</author>
-  <_description>The gtksourceview color scheme for GTKlash.</_description>
+  <_description>The light gtksourceview color scheme for GTKlash. Derived from Tomorrow Theme.</_description>
 
   <!-- Global Settings -->
-  <style name="current-line" background="#eeeeec"/>
-  <style name="current-line-number" background="#eeeeec"/>
-  <style name="draw-spaces" foreground="#babdb6"/>
-  <style name="background-pattern" background="#f3f3f3"/>
-
-  <!-- Right Margin -->
-  <style name="right-margin" foreground="#000000" background="#000000"/>
+  <style name="text" foreground="#24292E" background="#FFFFFF"/>
+  <!--<style name="selection" foreground="#24292E" background="#DCDCDC"/>-->
+  <style name="selection" foreground="#FFFFFF" background="#5294E2"/>
+  <style name="cursor" foreground="#24292E"/>
+  <style name="line-numbers" foreground="#ABABBA" background="#FAFBFB"/>
+  <style name="current-line" background="#F0F0F2"/>
+  <style name="current-line-number" foreground="#8F8FA3" background="#EAEAEC"/>
+  <style name="draw-spaces" foreground="#BABDB6"/>
+  <style name="background-pattern" background="#F3F3F3"/>
 
   <!-- Clash Rules -->
   <style name="clashrule:comment" foreground="#6A737D"/>
