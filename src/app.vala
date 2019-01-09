@@ -50,6 +50,7 @@ namespace Gtklash {
 
         protected void add_indicator() {
             // TODO
+            /*
             var indicator = new Indicator(
                 "Gtklash",
                 "Some messages.",
@@ -77,6 +78,7 @@ namespace Gtklash {
 
             indicator.set_menu(menu);
             indicator.set_secondary_activate_target(bar);
+            */
         }
     }
 }
