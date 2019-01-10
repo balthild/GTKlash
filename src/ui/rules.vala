@@ -9,6 +9,10 @@ namespace Gtklash.UI {
 
     [GtkTemplate(ui = "/org/gnome/Gtklash/res/ui/rules.ui")]
     public class Rules : Box, Content {
+        public string get_sidebar_text() {
+            return "Rules";
+        }
+
         private static SourceLanguageManager lang_manager;
         private static SourceStyleSchemeManager scheme_manager;
 

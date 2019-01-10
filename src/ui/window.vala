@@ -11,8 +11,8 @@ namespace Gtklash.UI {
 
         int active = 0;
 
-        [GtkChild]
-        Box content;
+        [GtkChild] ListBox sidebar;
+        [GtkChild] Box content;
 
         public Window(Gtk.Application app) {
             Object(application: app);
@@ -21,8 +21,21 @@ namespace Gtklash.UI {
         construct {
             delete_event.connect(hide_on_delete);
 
-            foreach (Content widget in contents)
+            foreach (Content widget in contents) {
                 widget.expand = true;
+
+                var label = new Label(widget.get_sidebar_text());
+                label.set_halign(Align.START);
+
+                var row = new ListBoxRow();
+                row.get_style_context().add_class("sidebar-row");
+
+                row.add(label);
+                sidebar.add(row);
+
+                label.show();
+                row.show();
+            }
 
             Content widget = contents[active];
             content.add(widget);

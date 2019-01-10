@@ -4,6 +4,10 @@ using Gee;
 namespace Gtklash.UI {
     [GtkTemplate(ui = "/org/gnome/Gtklash/res/ui/proxies.ui")]
     public class Proxies : Box, Content {
+        public string get_sidebar_text() {
+            return "Proxies";
+        }
+
         Soup.Session session = new Soup.Session();
 
         ProxyItem? active_proxy_item = null;
