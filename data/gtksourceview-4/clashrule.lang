@@ -20,29 +20,29 @@
       <start>#</start>
     </context>
 
-    <define-regex id="type">DOMAIN-SUFFIX|DOMAIN-KEYWORD|DOMAIN|IP-CIDR|GEOIP</define-regex>
+    <define-regex id="type">DOMAIN(?:-SUFFIX|-KEYWORD)?|IP-CIDR6?|GEOIP</define-regex>
+    <define-regex id="payload">[^#]+</define-regex>
     <define-regex id="action">DIRECT|REJECT|Proxy</define-regex>
     <define-regex id="adapter">[^#]+</define-regex>
 
     <context id="line">
-      <match>^\s*(\%{type}),(.+),((\%{action})|(\%{adapter}))\s*($|(#.*$))</match>
+      <match>^\s*(\%{type})\s*,\s*(\%{payload})\s*,\s*((\%{action})|(\%{adapter}))\s*(#.*)?$</match>
       <include>
         <context sub-pattern="1" style-ref="type"/>
         <context sub-pattern="2" style-ref="payload"/>
         <context sub-pattern="4" style-ref="action"/>
         <context sub-pattern="5" style-ref="adapter"/>
-        <context sub-pattern="7" style-ref="comment"/>
+        <context sub-pattern="6" style-ref="comment"/>
       </include>
     </context>
 
     <context id="line-final">
-      <match>^\s*((MATCH)|(FINAL),?),((\%{action})|(\%{adapter}))\s*($|(#.*$))</match>
+      <match>^\s*(MATCH)\s*,\s*((\%{action})|(\%{adapter}))\s*($|(#.*$))</match>
       <include>
-        <context sub-pattern="2" style-ref="type"/>
-        <context sub-pattern="3" style-ref="type"/>
-        <context sub-pattern="5" style-ref="action"/>
-        <context sub-pattern="6" style-ref="adapter"/>
-        <context sub-pattern="8" style-ref="comment"/>
+        <context sub-pattern="1" style-ref="type"/>
+        <context sub-pattern="3" style-ref="action"/>
+        <context sub-pattern="4" style-ref="adapter"/>
+        <context sub-pattern="5" style-ref="comment"/>
       </include>
     </context>
 
