@@ -21,9 +21,9 @@
     </context>
 
     <define-regex id="type">DOMAIN(?:-SUFFIX|-KEYWORD)?|IP-CIDR6?|GEOIP</define-regex>
-    <define-regex id="payload">[^#]+</define-regex>
+    <define-regex id="payload">[^#,]*</define-regex>
     <define-regex id="action">DIRECT|REJECT|Proxy</define-regex>
-    <define-regex id="adapter">[^#]+</define-regex>
+    <define-regex id="adapter">[^#,]*</define-regex>
 
     <context id="line">
       <match>^\s*(\%{type})\s*,\s*(\%{payload})\s*,\s*((\%{action})|(\%{adapter}))\s*(#.*)?$</match>

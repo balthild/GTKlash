@@ -173,11 +173,9 @@ namespace Gtklash {
             string[] rule_lines = rules.split("\n");
             var clash_rules = new Json.Array();
             foreach (string line in rule_lines) {
-                string rule = line.strip();
-                if (line == "" || line[0] == '#') continue;
-
-                // TODO: Check rule syntax
-                clash_rules.add_string_element(rule);
+                string? error = check_rule_line_valid(line);
+                if (error == null)
+                    clash_rules.add_string_element(line);
             }
             obj.set_array_member("Rule", clash_rules);
 

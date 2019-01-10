@@ -97,4 +97,51 @@ namespace Gtklash {
 
         return config;
     }
+
+    string? check_rule_line_valid(string line, bool strict = false) {
+        if (line == "")
+            return null;
+
+        string rule = line.split("#", 2)[0].strip();
+        if (rule == "")
+            return null;
+
+        string[] parts = rule.split(",");
+        var length = parts.length;
+
+        string type;
+        if (length == 3 || length == 2) {
+            type = parts[0].strip();
+        } else {
+            return "Syntax error.";
+        }
+
+        switch (type) {
+            case "DOMAIN":
+            case "DOMAIN-SUFFIX":
+            case "DOMAIN-KEYWORD":
+            case "IP-CIDR":
+            case "IP-CIDR6":
+            case "GEOIP":
+                if (length == 2)
+                    return @"Missing parameter for $type rule.";
+                else
+                    return null;
+
+            case "MATCH":
+                if (strict && length == 3)
+                    return "Please remove the redundant comma after MATCH.";
+                else
+                    return null;
+
+            case "FINAL":
+                if (strict)
+                    return "FINAL has been deprecated. Use MATCH instead.";
+                else
+                    return null;
+
+            default:
+                return "Unknown rule type.";
+        }
+    }
 }
