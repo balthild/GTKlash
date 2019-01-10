@@ -65,3 +65,7 @@
     /* Current line number */
     background-color: #3F4550;
 }
+
+.content-rules .rule-error-row {
+    padding: 4px 8px;
+}

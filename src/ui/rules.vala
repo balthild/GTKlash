@@ -113,13 +113,10 @@ namespace Gtklash.UI {
             for (int i = 0; i < 5; ++i) {
                 var label = new Label("");
                 label.set_halign(Align.START);
-                label.set_margin_top(2);
-                label.set_margin_bottom(2);
-                label.set_margin_start(6);
-                label.set_margin_end(6);
                 label.show();
 
                 var row = new ListBoxRow();
+                row.get_style_context().add_class("rule-error-row");
                 row.set_can_focus(false);
                 row.add(label);
 
@@ -190,7 +187,7 @@ namespace Gtklash.UI {
             foreach (RuleError error in rule_errors) {
                 ListBoxRow row = iter.data as ListBoxRow;
                 weak Label label = row.get_child() as Label;
-                label.set_markup(@"<b>$(error.line)</b>: $(error.message)");
+                label.set_markup(@"<b>Line $(error.line)</b>: $(error.message)");
                 row.show();
 
                 iter = iter.next;
