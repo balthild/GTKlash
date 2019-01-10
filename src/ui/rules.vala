@@ -1,3 +1,4 @@
+using Environment;
 using Gtk;
 
 namespace Gtklash.UI {
@@ -21,17 +22,26 @@ namespace Gtklash.UI {
                 new_lang_paths += path;
             }
 
-            string[] data_dirs = Environment.get_system_data_dirs();
+            // System data dirs (/usr/share, /usr/local/share, etc)
+            string[] data_dirs = get_system_data_dirs();
             foreach (var data_dir in data_dirs) {
                 string path = data_dir + "/gtklash/gtksourceview-4";
                 scheme_manager.append_search_path(path);
                 new_lang_paths += path;
             }
 
-            string data_dir = Environment.get_user_data_dir();
-            string path = data_dir + "/gtklash/gtksourceview-4";
-            scheme_manager.append_search_path(path);
-            new_lang_paths += path;
+            // User data dir (~/.local/share)
+            string data_dir_u = get_user_data_dir();
+            string path_u = data_dir_u + "/gtklash/gtksourceview-4";
+            scheme_manager.append_search_path(path_u);
+            new_lang_paths += path_u;
+
+            // Custom data dir (specified by DATA_DIR)
+            unowned string? data_dir_c = get_variable("RULE_SYNTAX_DATA");
+            if (data_dir_c != null && data_dir_c != "") {
+                scheme_manager.append_search_path(data_dir_c);
+                new_lang_paths += data_dir_c;
+            }
 
             lang_manager.set_search_path(new_lang_paths);
 

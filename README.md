@@ -29,19 +29,8 @@ meson build
 ninja -C build
 ```
 
-### Install data files
-
-Syntax highlighting for rule editor won't work without them.
-
-```bash
-mkdir -p $HOME/.local/share/gtklash/gtksourceview-4/
-cp -f data/clashrule.lang $HOME/.local/share/gtklash/gtksourceview-4/
-cp -f data/clashrule-light.xml $HOME/.local/share/gtklash/gtksourceview-4/
-cp -f data/clashrule-dark.xml $HOME/.local/share/gtklash/gtksourceview-4/
-```
-
 ### Run
 
 ```bash
-build/src/gtklash
+RULE_SYNTAX_DATA=data/gtksourceview-4 ./build/src/gtklash
 ```
