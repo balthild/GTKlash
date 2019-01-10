@@ -1,5 +1,3 @@
-using AppIndicator;
-
 namespace Gtklash {
     public class App : Gtk.Application {
         bool started = false;
@@ -46,39 +44,6 @@ namespace Gtklash {
                 win = main_window;
             }
             win.present();
-        }
-
-        protected void add_indicator() {
-            // TODO
-            /*
-            var indicator = new Indicator(
-                "Gtklash",
-                "Some messages.",
-                IndicatorCategory.APPLICATION_STATUS
-            );
-
-            indicator.set_status(IndicatorStatus.ACTIVE);
-            indicator.set_attention_icon("indicator-messages-new");
-
-            var menu = new Gtk.Menu();
-
-            var item = new Gtk.MenuItem.with_label("Foo");
-            item.activate.connect(() => {
-                indicator.set_status(IndicatorStatus.ATTENTION);
-            });
-            item.show();
-            menu.append(item);
-
-            var bar = item = new Gtk.MenuItem.with_label("Bar");
-            item.show();
-            item.activate.connect(() => {
-                indicator.set_status(IndicatorStatus.ACTIVE);
-            });
-            menu.append(item);
-
-            indicator.set_menu(menu);
-            indicator.set_secondary_activate_target(bar);
-            */
         }
     }
 }
