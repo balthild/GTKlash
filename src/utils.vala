@@ -76,4 +76,19 @@ namespace Gtklash {
         else
             return font_name;
     }
+
+    string json_member_str(unowned Json.Object obj, string name, string default) {
+        unowned Json.Node? node = obj.get_member(name);
+        return node == null ? default : (node.dup_string() ?? default);
+    }
+
+    int64 json_member_int(unowned Json.Object obj, string name, int64 default) {
+        unowned Json.Node? node = obj.get_member(name);
+        return node == null ? default : node.get_int();
+    }
+
+    bool json_member_bool(unowned Json.Object obj, string name, bool default) {
+        unowned Json.Node? node = obj.get_member(name);
+        return node == null ? default : node.get_boolean();
+    }
 }

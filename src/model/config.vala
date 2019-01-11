@@ -159,9 +159,10 @@ namespace Gtklash {
             var default_group = ProxyGroup() {
                 name = "Proxy",
                 type = "select",
-                proxies = new LinkedList<string>()
+                proxies = new LinkedList<string>(),
+                url = "",
+                interval = 0
             };
-            default_group.proxies.add("local-socks5");
             foreach (Proxy proxy in this.proxies) {
                 default_group.proxies.add(proxy.name);
             }

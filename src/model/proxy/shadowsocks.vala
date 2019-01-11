@@ -32,11 +32,8 @@ namespace Gtklash {
             this.cipher = obj.get_string_member("cipher");
             this.password = obj.get_string_member("password");
 
-            if (obj.has_member("obfs"))
-                this.obfs = obj.get_string_member("obfs");
-
-            if (obj.has_member("obfs-host"))
-                this.obfs_host = obj.get_string_member("obfs-host");
+            this.obfs = json_member_str(obj, "obfs", "");
+            this.obfs_host = json_member_str(obj, "obfs-host", "");
         }
 
         public override Json.Object serialize() {

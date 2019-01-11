@@ -27,17 +27,11 @@ namespace Gtklash {
         public HTTP.deserialize(Json.Object obj) {
             base.deserialize(obj);
 
-            if (obj.has_member("username"))
-                this.username = obj.get_string_member("username");
+            this.username = json_member_str(obj, "username", "");
+            this.password = json_member_str(obj, "password", "");
 
-            if (obj.has_member("password"))
-                this.username = obj.get_string_member("password");
-
-            if (obj.has_member("tls"))
-                this.tls = obj.get_boolean_member("tls");
-
-            if (obj.has_member("skip-cert-verify"))
-                this.skip_cert_verify = obj.get_boolean_member("skip-cert-verify");
+            this.tls = json_member_bool(obj, "tls", false);
+            this.skip_cert_verify = json_member_bool(obj, "skip-cert-verify", false);
         }
 
         public override Json.Object serialize() {

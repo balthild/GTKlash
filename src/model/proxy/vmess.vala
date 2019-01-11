@@ -45,17 +45,11 @@ namespace Gtklash {
             this.alter_id = (uint) obj.get_int_member("alterId");
             this.cipher = obj.get_string_member("cipher");
 
-            if (obj.has_member("tls"))
-                this.tls = obj.get_boolean_member("tls");
+            this.tls = json_member_bool(obj, "tls", false);
+            this.skip_cert_verify = json_member_bool(obj, "skip-cert-verify", false);
 
-            if (obj.has_member("skip-cert-verify"))
-                this.skip_cert_verify = obj.get_boolean_member("skip-cert-verify");
-
-            if (obj.has_member("network"))
-                this.network = obj.get_string_member("network");
-
-            if (obj.has_member("ws-path"))
-                this.ws_path = obj.get_string_member("ws-path");
+            this.network = json_member_str(obj, "network", "");
+            this.ws_path = json_member_str(obj, "ws-path", "");
         }
 
         public override Json.Object serialize() {
