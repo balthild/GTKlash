@@ -3,9 +3,7 @@ using Gtk;
 namespace Gtklash.UI {
     [GtkTemplate(ui = "/org/gnome/Gtklash/res/ui/overview.ui")]
     public class Overview : Box, Content {
-        public string get_sidebar_text() {
-            return "Overview";
-        }
+        public string sidebar_row_text { get; default = "Overview"; }
 
         bool shown = false;
         bool dead = false;

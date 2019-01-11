@@ -24,7 +24,7 @@ namespace Gtklash.UI {
             foreach (Content widget in contents) {
                 widget.expand = true;
 
-                var label = new Label(widget.get_sidebar_text());
+                var label = new Label(widget.sidebar_row_text);
                 label.set_halign(Align.START);
 
                 var row = new ListBoxRow();

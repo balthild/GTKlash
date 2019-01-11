@@ -36,9 +36,7 @@ namespace Gtklash.UI {
 
     [GtkTemplate(ui = "/org/gnome/Gtklash/res/ui/rules.ui")]
     public class Rules : Box, Content {
-        public string get_sidebar_text() {
-            return "Rules";
-        }
+        public string sidebar_row_text { get; default = "Rules"; }
 
         private static const int MAX_ERROR_ROWS = 5;
 
