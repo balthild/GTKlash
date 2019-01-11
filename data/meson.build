@@ -40,15 +40,6 @@ if compile_schemas.found()
   )
 endif
 
-rule_syntax = [
-  'gtksourceview-4/clashrule.lang',
-  'gtksourceview-4/clashrule-light.xml',
-  'gtksourceview-4/clashrule-dark.xml'
-]
-install_data(rule_syntax,
-  install_dir: join_paths(
-    get_option('datadir'),
-    meson.project_name(),
-    'gtksourceview-4'
-  )
+install_subdir('gtksourceview-4',
+  install_dir: join_paths(get_option('datadir'), meson.project_name())
 )

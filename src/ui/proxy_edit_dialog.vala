@@ -72,26 +72,68 @@ namespace Gtklash {
 
         public void show_proxy(Proxy proxy) {
             is_group = false;
-            show_form(false);
+            type_radios_box.set_visible(false);
+
+            change_visible_fields(proxy.get_proxy_type());
+
+            proxy_name.text = proxy.name;
+            proxy_server.text = proxy.server;
+            proxy_port.value = (double) proxy.port;
+
+            if (proxy is Shadowsocks) {
+                weak Shadowsocks ss = (Shadowsocks) proxy;
+                proxy_ss_cipher.active_id = ss.cipher;
+                proxy_ss_password.text = ss.password;
+                proxy_ss_obfs_tls.active = ss.obfs == "tls";
+                proxy_ss_obfs_host.text = ss.obfs_host;
+            } else if (proxy is Vmess) {
+                weak Vmess vmess = (Vmess) proxy;
+                proxy_vmess_uuid.text = vmess.uuid;
+                proxy_vmess_alter_id.value = (double) vmess.alter_id;
+                proxy_vmess_cipher.active_id = vmess.cipher;
+                proxy_vmess_tls.active = vmess.tls;
+                proxy_vmess_skip_cert_verify.active = vmess.skip_cert_verify;
+                proxy_vmess_ws.active = vmess.network == "ws";
+                proxy_vmess_ws_path.text = vmess.ws_path;
+            } else if (proxy is Socks5) {
+                weak Socks5 socks5 = (Socks5) proxy;
+                proxy_socks5_username.text = socks5.username;
+                proxy_socks5_password.text = socks5.password;
+                proxy_socks5_tls.active = socks5.tls;
+                proxy_socks5_skip_cert_verify.active = socks5.skip_cert_verify;
+            } else if (proxy is HTTP) {
+                weak HTTP http = (HTTP) proxy;
+                // They use the same fields.
+                proxy_socks5_username.text = http.username;
+                proxy_socks5_password.text = http.password;
+                proxy_socks5_tls.active = http.tls;
+                proxy_socks5_skip_cert_verify.active = http.skip_cert_verify;
+            } else {
+                assert_not_reached();
+            }
+
+            show();
         }
 
         public void show_group(ProxyGroup group) {
             is_group = true;
-            show_form(false);
+            type_radios_box.set_visible(false);
+
+            // TODO
+
+            show();
         }
 
         public void show_new() {
             is_group = false;
-            show_form(true);
-        }
-
-        void show_form(bool is_new) {
-            set_transient_for(Vars.app.main_window);
-
-            // TODO: Update fields
-            type_radios_box.set_visible(is_new);
+            type_radios_box.set_visible(true);
 
             show();
+        }
+
+        public override void show() {
+            set_transient_for(Vars.app.main_window);
+            base.show();
         }
 
         [GtkCallback]

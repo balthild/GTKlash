@@ -38,7 +38,7 @@ namespace Gtklash.UI {
     public class Rules : Box, Content {
         public string sidebar_row_text { get; default = "Rules"; }
 
-        private static const int MAX_ERROR_ROWS = 5;
+        private const int MAX_ERROR_ROWS = 5;
 
         private static SourceLanguageManager lang_manager;
         private static SourceStyleSchemeManager scheme_manager;
@@ -169,7 +169,7 @@ namespace Gtklash.UI {
                     continue;
 
                 // Copy as needed
-                owned uint8[] line_data = data[line_start:i+1];
+                uint8[] line_data = data[line_start:i+1];
                 line_data[i-line_start] = 0;
 
                 string line = (string) line_data;
