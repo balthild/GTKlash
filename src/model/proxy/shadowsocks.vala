@@ -14,8 +14,8 @@ namespace Gtklash {
             ushort port,
             string cipher,
             string password,
-            string? obfs = null,
-            string? obfs_host = null
+            string obfs = "",
+            string obfs_host = ""
         ) {
             base(name, server, port);
 
@@ -45,8 +45,11 @@ namespace Gtklash {
             obj.set_string_member("cipher", cipher);
             obj.set_string_member("password", password);
 
-            if (obfs != null) {
+            if (obfs != "") {
                 obj.set_string_member("obfs", obfs);
+            }
+
+            if (obfs_host != "") {
                 obj.set_string_member("obfs-host", obfs_host);
             }
 

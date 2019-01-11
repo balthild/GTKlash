@@ -21,8 +21,8 @@ namespace Gtklash {
             string cipher,
             bool tls = false,
             bool skip_cert_verify = false,
-            string? network = null,
-            string? ws_path = null
+            string network = "",
+            string ws_path = ""
         ) {
             base(name, server, port);
 
@@ -70,8 +70,11 @@ namespace Gtklash {
                 obj.set_boolean_member("skip-cert-verify", skip_cert_verify);
             }
 
-            if (network != null) {
+            if (network != "") {
                 obj.set_string_member("network", network);
+            }
+
+            if (ws_path != "") {
                 obj.set_string_member("ws-path", ws_path);
             }
 
