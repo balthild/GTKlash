@@ -109,9 +109,9 @@ namespace Gtklash {
         string[] parts = rule.split(",");
         var length = parts.length;
 
-        string type;
+        unowned string type;
         if (length == 3 || length == 2) {
-            type = parts[0].strip();
+            type = parts[0]._strip();
         } else {
             return "Syntax error.";
         }

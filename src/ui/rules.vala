@@ -4,7 +4,34 @@ using Gtk;
 namespace Gtklash.UI {
     struct RuleError {
         int line;
+        string text;
         string message;
+    }
+
+    class RuleErrorRow : ListBoxRow {
+        RuleError error;
+
+        Label label;
+
+        construct {
+            get_style_context().add_class("rule-error-row");
+            set_can_focus(false);
+
+            label = new Label("");
+            label.set_halign(Align.START);
+            label.show();
+
+            add(label);
+        }
+
+        public void set_error(RuleError error) {
+            this.error = error;
+            label.set_markup(@"<b>Line $(error.line)</b>: $(error.message)");
+        }
+
+        public RuleError get_error() {
+            return error;
+        }
     }
 
     [GtkTemplate(ui = "/org/gnome/Gtklash/res/ui/rules.ui")]
@@ -12,6 +39,8 @@ namespace Gtklash.UI {
         public string get_sidebar_text() {
             return "Rules";
         }
+
+        private static const int MAX_ERROR_ROWS = 5;
 
         private static SourceLanguageManager lang_manager;
         private static SourceStyleSchemeManager scheme_manager;
@@ -110,16 +139,8 @@ namespace Gtklash.UI {
 
             buffer.tag_table.add(error_tag);
 
-            for (int i = 0; i < 5; ++i) {
-                var label = new Label("");
-                label.set_halign(Align.START);
-                label.show();
-
-                var row = new ListBoxRow();
-                row.get_style_context().add_class("rule-error-row");
-                row.set_can_focus(false);
-                row.add(label);
-
+            for (int i = 0; i < MAX_ERROR_ROWS; ++i) {
+                var row = new RuleErrorRow();
                 error_list.add(row);
             }
         }
@@ -140,7 +161,7 @@ namespace Gtklash.UI {
             unowned uint8[] data = rule.data;
 
             size_t line_start = 0;
-            int line_num = 0;
+            int line_num = 0, error_count = 0;
 
             // Strings in GLib are null-terminated, same as those in vanilla C.
             // But the length of str.data doesn't cover the trailing zero.
@@ -156,7 +177,8 @@ namespace Gtklash.UI {
                 string line = (string) line_data;
                 string? error = check_rule_line_valid(line, true);
                 if (error != null) {
-                    rule_errors.add({ line_num + 1, error });
+                    ++error_count;
+                    rule_errors.add({ line_num + 1, line, error });
 
                     buffer.get_iter_at_line(out start, line_num);
 
@@ -164,6 +186,10 @@ namespace Gtklash.UI {
                     end.forward_to_line_end();
 
                     buffer.apply_tag(error_tag, start, end);
+                }
+
+                if (error_count == MAX_ERROR_ROWS) {
+                    break;
                 }
 
                 ++line_num;
@@ -185,9 +211,8 @@ namespace Gtklash.UI {
             weak List<weak Widget> iter = rows.first();
 
             foreach (RuleError error in rule_errors) {
-                ListBoxRow row = iter.data as ListBoxRow;
-                weak Label label = row.get_child() as Label;
-                label.set_markup(@"<b>Line $(error.line)</b>: $(error.message)");
+                var row = iter.data as RuleErrorRow;
+                row.set_error(error);
                 row.show();
 
                 iter = iter.next;
@@ -213,6 +238,22 @@ namespace Gtklash.UI {
         private void set_rule_ok(bool flag) {
             rule_ok = flag;
             save_btn.set_sensitive(edited && rule_ok);
+        }
+
+        [GtkCallback]
+        private void jump_to_error(ListBoxRow row) {
+            RuleError error = (row as RuleErrorRow).get_error();
+
+            TextIter iter;
+            buffer.get_iter_at_line(out iter, error.line - 1);
+
+            string[] pieces = error.text.split("#", 2);
+            if (pieces.length == 2)
+                iter.forward_chars(pieces[0]._chomp().length);
+            else
+                iter.forward_to_line_end();
+
+            buffer.place_cursor(iter);
         }
 
         [GtkCallback]

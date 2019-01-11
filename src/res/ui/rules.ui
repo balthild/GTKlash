@@ -51,6 +51,7 @@
       <object class="GtkListBox" id="error_list">
         <property name="can_focus">False</property>
         <property name="selection_mode">none</property>
+        <signal name="row-activated" handler="jump_to_error" swapped="no"/>
       </object>
       <packing>
         <property name="expand">False</property>
