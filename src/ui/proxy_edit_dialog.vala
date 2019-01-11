@@ -28,12 +28,11 @@ namespace Gtklash {
         public signal void save_proxy(Proxy? proxy, ProxyGroup? group);
 
         [GtkChild] Box type_radios_box;
-        [GtkChild] RadioButton type_proxy;
-        [GtkChild] RadioButton type_group;
 
         [GtkChild] Grid proxy_fields;
         [GtkChild] Grid group_fields;
 
+        // Proxy fields
         [GtkChild] RadioButton proxy_type_ss;
         [GtkChild] RadioButton proxy_type_vmess;
         [GtkChild] RadioButton proxy_type_socks5;
@@ -61,6 +60,14 @@ namespace Gtklash {
         [GtkChild] Switch proxy_socks5_tls;
         [GtkChild] Switch proxy_socks5_skip_cert_verify;
 
+        // Group fields
+        [GtkChild] RadioButton group_type_url_test;
+        [GtkChild] RadioButton group_type_fallback;
+
+        [GtkChild] Entry group_name;
+        [GtkChild] Entry group_test_url;
+        [GtkChild] SpinButton group_test_interval;
+
         public ProxyEditDialog() {
             Object(use_header_bar: 1);
         }
@@ -74,7 +81,14 @@ namespace Gtklash {
             is_group = false;
             type_radios_box.set_visible(false);
 
-            change_visible_fields(proxy.get_proxy_type());
+            string type = proxy.get_proxy_type();
+            change_visible_fields(type);
+            switch (type) {
+                case "vmess": proxy_type_vmess.set_active(true); break;
+                case "http": proxy_type_http.set_active(true); break;
+                case "socks5": proxy_type_socks5.set_active(true); break;
+                default: proxy_type_ss.set_active(true); break;
+            }
 
             proxy_name.text = proxy.name;
             proxy_server.text = proxy.server;
@@ -119,7 +133,14 @@ namespace Gtklash {
             is_group = true;
             type_radios_box.set_visible(false);
 
-            // TODO
+            if (group.type == "fallback")
+                group_type_fallback.set_active(true);
+            else
+                group_type_url_test.set_active(true);
+
+            group_name.text = group.name;
+            group_test_url.text = group.url;
+            group_test_interval.value = (double) group.interval;
 
             show();
         }
@@ -161,7 +182,7 @@ namespace Gtklash {
                     (ushort) proxy_port.value,
                     proxy_ss_cipher.active_id,
                     proxy_ss_password.text,
-                    proxy_ss_obfs_tls.active ? "tls" : null,
+                    proxy_ss_obfs_tls.active ? "tls" : "",
                     proxy_ss_obfs_host.text
                 );
             } else if (proxy_type_vmess.active) {
@@ -174,7 +195,7 @@ namespace Gtklash {
                     proxy_vmess_cipher.active_id,
                     proxy_vmess_tls.active,
                     proxy_vmess_skip_cert_verify.active,
-                    proxy_vmess_ws.active ? "ws" : null,
+                    proxy_vmess_ws.active ? "ws" : "",
                     proxy_vmess_ws_path.text
                 );
             } else if (proxy_type_socks5.active) {
@@ -231,8 +252,9 @@ namespace Gtklash {
             // incorrectly after it is resized.
             set_visible(false);
 
-            proxy_fields.set_visible(btn.name == "type_proxy");
-            group_fields.set_visible(btn.name == "type_group");
+            is_group = btn.name == "type_group";
+            proxy_fields.set_visible(!is_group);
+            group_fields.set_visible(is_group);
 
             // ...as well.
             set_visible(true);
