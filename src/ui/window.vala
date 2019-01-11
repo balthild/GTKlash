@@ -37,9 +37,17 @@ namespace Gtklash.UI {
                 row.show();
             }
 
-            Content widget = contents[active];
-            content.add(widget);
-            widget.on_show();
+            content.add(contents[active]);
+        }
+
+        public override void hide() {
+            base.hide();
+            contents[active].on_hide();
+        }
+
+        public override void show() {
+            base.show();
+            contents[active].on_show();
         }
 
         public void real_close() {
