@@ -30,9 +30,7 @@ namespace Gtklash {
             var group = ProxyGroup() {
                 name = obj.get_string_member("name"),
                 type = obj.get_string_member("type"),
-                proxies = new Gee.LinkedList<string>(),
-                url = "",
-                interval = 0
+                proxies = new Gee.LinkedList<string>()
             };
 
             Json.Array proxies = obj.get_array_member("proxies");
@@ -41,11 +39,8 @@ namespace Gtklash {
                 group.proxies.add(proxy);
             }
 
-            if (obj.has_member("url"))
-                group.url = obj.get_string_member("url");
-
-            if (obj.has_member("interval"))
-                group.interval = (ushort) obj.get_int_member("interval");
+            group.url = json_member_str(obj, "url", "");
+            group.interval = (ushort) json_member_int(obj, "interval", 300);
 
             return group;
         }

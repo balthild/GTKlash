@@ -9,6 +9,7 @@ namespace Gtklash.UI {
         private ProxyGroup? group;
 
         [GtkChild] Label proxy_name;
+        [GtkChild] Label proxy_type;
         [GtkChild] Label proxy_addr;
 
         [GtkChild] Image active_indicator;
@@ -19,6 +20,7 @@ namespace Gtklash.UI {
             this.group = null;
 
             proxy_name.set_text(proxy.name);
+            proxy_type.set_text(proxy.get_proxy_type_description());
             proxy_addr.set_text("%s:%hu".printf(proxy.server, proxy.port));
         }
 

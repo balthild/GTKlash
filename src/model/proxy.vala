@@ -28,5 +28,7 @@ namespace Gtklash {
 
             return obj;
         }
+
+        public abstract string get_proxy_type_description();
     }
 }

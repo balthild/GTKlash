@@ -224,8 +224,17 @@ namespace Gtklash {
         }
 
         private ProxyGroup construct_group_data() {
-            // TODO
-            return ProxyGroup();
+            var group = ProxyGroup() {
+                name = group_name.text,
+                type = group_type_fallback.active ? "fallback" : "url-test",
+                proxies = new Gee.LinkedList<string>(),
+                url = group_test_url.text,
+                interval = (ushort) group_test_interval.value
+            };
+
+            // TODO: proxies
+
+            return group;
         }
 
         private void change_visible_fields(string type) {

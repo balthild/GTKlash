@@ -74,5 +74,9 @@ namespace Gtklash {
 
             return obj;
         }
+
+        public override string get_proxy_type_description() {
+            return @"VMess ($network)";
+        }
     }
 }
