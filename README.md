@@ -17,8 +17,9 @@ A proxy client written in GTK+3. Based on [Clash](https://github.com/Dreamacro/c
 
 ### Build dependencies
 
-- Meson & Ninja
-- Go
+- meson & ninja
+- vala
+- go
 
 ### Compile
 
