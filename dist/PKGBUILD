@@ -6,7 +6,7 @@ pkgver=0.1
 pkgrel=1
 pkgdesc='A proxy client that supports multiple protocol'
 arch=(x86_64)
-url='https://github.com/elementary/code'
+url='https://github.com/balthild/GTKlash'
 license=(GPL3)
 depends=(
   glib2
