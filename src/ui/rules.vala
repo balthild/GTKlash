@@ -123,11 +123,15 @@ namespace Gtklash.UI {
             buffer.end_not_undoable_action();
             buffer.set_modified(false);
 
-            buffer.changed.connect_after(sync_undo_redo_status);
             buffer.undo.connect_after(sync_undo_redo_status);
             buffer.redo.connect_after(sync_undo_redo_status);
 
-            buffer.changed.connect_after(check_rule_valid);
+            buffer.changed.connect_after(() => {
+                undo_btn.set_sensitive(true);
+                redo_btn.set_sensitive(false);
+                check_rule_valid();
+            });
+
             buffer.modified_changed.connect_after(() => {
                 set_edited(buffer.get_modified());
             });
