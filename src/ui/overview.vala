@@ -134,7 +134,7 @@ namespace Gtklash.UI {
                     .printf(http_port);
             }
 
-            int64 socks_port = obj.get_int_member("socket-port");
+            int64 socks_port = obj.get_int_member("socks-port");
             string socks_status;
             if (http_port == 0) {
                 socks_status = "SOCKS5 Proxy: <span foreground='#c00'>Failed to listen on port %hu</span>"
