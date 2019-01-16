@@ -13,7 +13,7 @@ namespace Gtklash {
 
         // Proxy
         LinkedList<Proxy> proxies;
-        LinkedList<ProxyGroup?> proxy_groups;
+        LinkedList<ProxyGroup> proxy_groups;
         string rules;
 
         // Misc
@@ -96,7 +96,7 @@ namespace Gtklash {
 
                 // Proxy
                 proxies = new LinkedList<Proxy>(),
-                proxy_groups = new LinkedList<ProxyGroup?>(),
+                proxy_groups = new LinkedList<ProxyGroup>(),
                 rules = obj.get_string_member("rules"),
 
                 // Misc
@@ -121,7 +121,7 @@ namespace Gtklash {
             Json.Array proxy_groups = obj.get_array_member("proxy-groups");
             foreach (weak Json.Node group_node in proxy_groups.get_elements()) {
                 Json.Object group_obj = group_node.get_object();
-                ProxyGroup proxy_group = ProxyGroup.deserialize(group_obj);
+                ProxyGroup proxy_group = new ProxyGroup.deserialize(group_obj);
 
                 if (proxy_group.name == "Proxy")
                     continue;
@@ -153,16 +153,11 @@ namespace Gtklash {
             // Proxy Groups
             var proxy_groups = new Json.Array();
             foreach (ProxyGroup group in this.proxy_groups) {
-                proxy_groups.add_object_element(group.serialize());
+                if (group.proxies.size > 0)
+                    proxy_groups.add_object_element(group.serialize());
             }
 
-            var default_group = ProxyGroup() {
-                name = "Proxy",
-                type = "select",
-                proxies = new LinkedList<string>(),
-                url = "",
-                interval = 0
-            };
+            var default_group = new ProxyGroup("Proxy", "select");
             foreach (Proxy proxy in this.proxies) {
                 default_group.proxies.add(proxy.name);
             }

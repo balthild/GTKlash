@@ -133,7 +133,7 @@ namespace Gtklash {
             is_group = true;
             type_radios_box.set_visible(false);
 
-            if (group.type == "fallback")
+            if (group.group_type == "fallback")
                 group_type_fallback.set_active(true);
             else
                 group_type_url_test.set_active(true);
@@ -150,10 +150,16 @@ namespace Gtklash {
             type_radios_box.set_visible(true);
 
             show();
+
+            prompt("");
         }
 
         public override void show() {
             set_transient_for(Vars.app.main_window);
+
+            proxy_fields.set_visible(!is_group);
+            group_fields.set_visible(is_group);
+
             base.show();
         }
 
@@ -172,9 +178,31 @@ namespace Gtklash {
                 save_proxy(construct_proxy_data(), null);
         }
 
-        private Proxy construct_proxy_data() {
-            // TODO: Validate fields
+        private void prompt(string message) {
+            var msg = new MessageDialog(
+                this,
+                DialogFlags.MODAL,
+                MessageType.WARNING,
+                ButtonsType.OK,
+                message
+            );
+            msg.response.connect ((response) => {
+                msg.destroy();
+            });
+            msg.show();
+        }
 
+        private bool validate_fields() {
+            if (is_group) {
+                string name = group_name.text;
+                if (name == "")
+                    prompt("Invalid name");
+            }
+
+            return true;
+        }
+
+        private Proxy construct_proxy_data() {
             if (proxy_type_ss.active) {
                 return new Shadowsocks(
                     proxy_name.text,
@@ -224,13 +252,12 @@ namespace Gtklash {
         }
 
         private ProxyGroup construct_group_data() {
-            var group = ProxyGroup() {
-                name = group_name.text,
-                type = group_type_fallback.active ? "fallback" : "url-test",
-                proxies = new Gee.LinkedList<string>(),
-                url = group_test_url.text,
-                interval = (ushort) group_test_interval.value
-            };
+            string name = group_name.text;
+            string type = group_type_fallback.active ? "fallback" : "url-test";
+            string url = group_test_url.text;
+            ushort interval = (ushort) group_test_interval.value;
+
+            var group = new ProxyGroup(name, type, url, interval);
 
             // TODO: proxies
 

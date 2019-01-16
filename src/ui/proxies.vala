@@ -27,7 +27,7 @@ namespace Gtklash.UI {
         }
 
         void init_proxy_list() {
-            LinkedList<ProxyGroup?> groups = Vars.config.proxy_groups;
+            LinkedList<ProxyGroup> groups = Vars.config.proxy_groups;
             foreach (ProxyGroup group in groups) {
                 var row = new ProxyItem.from_group(group);
                 proxy_list.add(row);

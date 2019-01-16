@@ -89,7 +89,7 @@ namespace Gtklash {
             mode = "Rule",
 
             proxies = new LinkedList<Proxy>(),
-            proxy_groups = new LinkedList<ProxyGroup?>(),
+            proxy_groups = new LinkedList<ProxyGroup>(),
             rules = defualt_rules
         };
 
