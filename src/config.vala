@@ -98,14 +98,14 @@ namespace Gtklash {
         return config;
     }
 
-    string? check_rule_line_valid(string line, bool strict = false) {
+    string rule_line_trim_comment(string line) {
         if (line == "")
-            return null;
+            return "";
 
-        string rule = line.split("#", 2)[0].strip();
-        if (rule == "")
-            return null;
+        return line.split("#", 2)[0].strip();
+    }
 
+    string? check_rule_valid(string rule, bool strict = false) {
         string[] parts = rule.split(",");
         var length = parts.length;
 

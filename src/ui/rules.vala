@@ -129,7 +129,7 @@ namespace Gtklash.UI {
             buffer.changed.connect_after(() => {
                 undo_btn.set_sensitive(true);
                 redo_btn.set_sensitive(false);
-                check_rule_valid();
+                check_rules_valid();
             });
 
             buffer.modified_changed.connect_after(() => {
@@ -152,15 +152,15 @@ namespace Gtklash.UI {
             redo_btn.set_sensitive(buffer.can_redo);
         }
 
-        private void check_rule_valid() {
+        private void check_rules_valid() {
             rule_errors.clear();
 
             TextIter start, end;
             buffer.get_bounds(out start, out end);
             buffer.remove_tag(error_tag, start, end);
 
-            string rule = buffer.text;
-            unowned uint8[] data = rule.data;
+            string rules = buffer.text;
+            unowned uint8[] data = rules.data;
 
             size_t line_start = 0;
             int line_num = 0, error_count = 0;
@@ -176,13 +176,20 @@ namespace Gtklash.UI {
                 uint8[] line_data = data[line_start:i+1];
                 line_data[i-line_start] = 0;
 
+                line_start = i + 1;
+                ++line_num;
+
                 string line = (string) line_data;
-                string? error = check_rule_line_valid(line, true);
+                string rule = rule_line_trim_comment(line);
+                if (rule == "")
+                    continue;
+
+                string? error = check_rule_valid(rule, true);
                 if (error != null) {
                     ++error_count;
-                    rule_errors.add({ line_num + 1, line, error });
+                    rule_errors.add({ line_num, line, error });
 
-                    buffer.get_iter_at_line(out start, line_num);
+                    buffer.get_iter_at_line(out start, line_num - 1);
 
                     end = start;
                     end.forward_to_line_end();
@@ -193,9 +200,6 @@ namespace Gtklash.UI {
                 if (error_count == MAX_ERROR_ROWS) {
                     break;
                 }
-
-                ++line_num;
-                line_start = i + 1;
             }
 
             update_error_list();
