@@ -6,8 +6,8 @@ A proxy client written in GTK+3. Based on [Clash](https://github.com/Dreamacro/c
 
 ### Dependencies
 
-- GLib 2.50 or later
-- GTK+ 3.22 or later
+- GLib (2.50 or later)
+- GTK+ (3.22 or later)
 - libgee
 - libsoup
 - librsvg
@@ -19,13 +19,17 @@ A proxy client written in GTK+3. Based on [Clash](https://github.com/Dreamacro/c
 
 - meson & ninja
 - vala
-- go
+- go (1.11 or later)
 
 ### Compile
 
 ```bash
 git clone https://github.com/balthild/GTKlash.git
 cd GTKlash
+
+# If there're some network issue when accessing golang.org
+# export https_proxy=http://example.com:80
+
 meson build
 ninja -C build
 ```
