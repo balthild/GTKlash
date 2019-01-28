@@ -7,17 +7,8 @@ import (
 	"github.com/Dreamacro/clash/hub"
 )
 
-//export clash_run
-func clash_run() *C.char {
-	if err := hub.Parse(); err != nil {
-		return C.CString(err.Error())
-	}
-
-	return C.CString("success")
-}
-
-//export clash_update_all_config
-func clash_update_all_config() *C.char {
+//export clash_reload
+func clash_reload() *C.char {
 	if err := hub.Parse(); err != nil {
 		return C.CString(err.Error())
 	}

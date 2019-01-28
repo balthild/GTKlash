@@ -1,5 +1,4 @@
-extern string clash_run();
-extern string clash_update_all_config();
+extern string clash_reload();
 extern void clash_set_config_home_dir(string path);
 
 namespace Gtklash {
@@ -7,7 +6,7 @@ namespace Gtklash {
         init_config();
         clash_set_config_home_dir(get_config_dir() + "/clash");
 
-        string result = clash_run();
+        string result = clash_reload();
         if (result == "success") {
             Vars.clash_status = Status.SUCCEEDED;
         } else {
@@ -17,7 +16,9 @@ namespace Gtklash {
     }
 
     void clash_reload_config() {
-        string result = clash_update_all_config();
+        print("Reloading clash config\n");
+
+        string result = clash_reload();
         if (result == "success") {
             Vars.clash_status = Status.SUCCEEDED;
         } else {

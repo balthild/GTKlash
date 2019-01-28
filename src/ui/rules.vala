@@ -274,6 +274,11 @@ namespace Gtklash.UI {
 
         [GtkCallback]
         private void save_btn_clicked(Button btn) {
+            Vars.config.rules = buffer.text;
+
+            save_config();
+            clash_reload_config();
+
             buffer.set_modified(false);
         }
 
