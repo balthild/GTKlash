@@ -24,6 +24,7 @@ namespace Gtklash {
         }
 
         bool is_group = false;
+        string current_name = "";
 
         public signal void save_proxy(Proxy? proxy, ProxyGroup? group);
 
@@ -79,6 +80,8 @@ namespace Gtklash {
 
         public void show_proxy(Proxy proxy) {
             is_group = false;
+            current_name = proxy.name;
+
             type_radios_box.set_visible(false);
 
             string type = proxy.get_proxy_type();
@@ -131,6 +134,8 @@ namespace Gtklash {
 
         public void show_group(ProxyGroup group) {
             is_group = true;
+            current_name = group.name;
+
             type_radios_box.set_visible(false);
 
             if (group.group_type == "fallback")
@@ -147,11 +152,11 @@ namespace Gtklash {
 
         public void show_new() {
             is_group = false;
+            current_name = "";
+
             type_radios_box.set_visible(true);
 
             show();
-
-            prompt("");
         }
 
         public override void show() {
@@ -170,6 +175,9 @@ namespace Gtklash {
 
         [GtkCallback]
         private void submit_edit(Button btn) {
+            if (!validate_fields())
+                return;
+
             hide();
 
             if (is_group)
@@ -193,13 +201,56 @@ namespace Gtklash {
         }
 
         private bool validate_fields() {
+            string name;
+
             if (is_group) {
-                string name = group_name.text;
-                if (name == "")
-                    prompt("Invalid name");
+                name = group_name.text;
+
+                if (group_test_url.text == "") {
+                    prompt("Testing URL must not be empty");
+                    return false;
+                }
+            } else {
+                name = proxy_name.text;
+
+                if (proxy_server.text == "") {
+                    prompt("Server address must not be empty");
+                    return false;
+                }
+
+                if (proxy_type_ss.active && proxy_ss_password.text == "") {
+                    prompt("Password must not be empty");
+                    return false;
+                } else if (proxy_type_vmess.active && proxy_vmess_uuid.text == "") {
+                    prompt("UUID must not be empty");
+                    return false;
+                }
+            }
+
+            if (name == "" || name == "Proxy") {
+                prompt("Invalid name");
+                return false;
+            }
+            if (name != current_name && name_existed(name)) {
+                prompt("The name has already existed");
+                return false;
             }
 
             return true;
+        }
+
+        private bool name_existed(string name) {
+            foreach (ProxyGroup group in Vars.config.proxy_groups) {
+                if (name == group.name)
+                    return true;
+            }
+
+            foreach (Proxy proxy in Vars.config.proxies) {
+                if (name == proxy.name)
+                    return true;
+            }
+
+            return false;
         }
 
         private Proxy construct_proxy_data() {
