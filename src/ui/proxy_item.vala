@@ -30,6 +30,7 @@ namespace Gtklash.UI {
             this.group = group;
 
             proxy_name.set_text(group.name);
+            proxy_type.set_text("");
             proxy_addr.set_text("Proxy Group");
         }
 
@@ -47,6 +48,7 @@ namespace Gtklash.UI {
 
             this.proxy = proxy;
             proxy_name.set_text(proxy.name);
+            proxy_type.set_text(proxy.get_proxy_type_description());
             proxy_addr.set_text("%s:%hu".printf(proxy.server, proxy.port));
         }
 
