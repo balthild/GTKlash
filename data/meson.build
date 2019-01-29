@@ -40,6 +40,10 @@ if compile_schemas.found()
   )
 endif
 
+install_data('gtklash-tray-symbolic.svg',
+  install_dir: join_paths(get_option('datadir'), 'icons')
+)
+
 install_subdir('gtksourceview-4',
   install_dir: join_paths(get_option('datadir'), meson.project_name())
 )
