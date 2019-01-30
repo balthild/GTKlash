@@ -1,5 +1,10 @@
 using AppIndicator;
 
+extern void clash_set_config_home_dir(string path);
+extern bool clash_mmdb_is_invalid();
+extern void clash_start_download_mmdb();
+extern string clash_get_download_progress();
+
 namespace Gtklash {
     public class App : Gtk.Application {
         bool started = false;
@@ -18,10 +23,15 @@ namespace Gtklash {
 
         protected override void activate() {
             base.activate();
+            start_app.begin();
+        }
 
+        private async void start_app() {
             if (!started) {
-                start_clash();
                 hold();
+
+                init_config();
+                yield start_clash();
 
                 load_css();
                 main_window = new UI.Window(this);
@@ -31,6 +41,49 @@ namespace Gtklash {
 
             show_window();
             add_indicator();
+        }
+
+        private async void start_clash() {
+            clash_set_config_home_dir(get_config_dir() + "/clash");
+
+            if (clash_mmdb_is_invalid()) {
+                var dialog = new ProgressDialog(
+                    "Downloading MMDB",
+                    "GTKlash requires Maxmind GeoLite Database to make GEOIP rules functional."
+                );
+                dialog.show();
+
+                bool result = yield dialog.run_progress((dialog) => {
+                    clash_start_download_mmdb();
+                    while (true) {
+                        string[] progress = clash_get_download_progress().split(",");
+
+                        double rate = double.parse(progress[1]);
+                        Status status;
+                        switch (progress[0]) {
+                            case "0": status = Status.LOADING; break;
+                            case "1": status = Status.SUCCEEDED; break;
+                            case "2": status = Status.FAILED; break;
+                            default: assert_not_reached();
+                        }
+
+                        Idle.add(() => {
+                            dialog.set_progress(rate, status);
+                            return Source.REMOVE;
+                        });
+
+                        if (status != Status.LOADING)
+                            break;
+                    }
+                });
+                dialog.destroy();
+
+                if (!result) {
+                    // TODO: Show message dialog then exit
+                }
+            }
+
+            clash_reload();
         }
 
         private void load_css() {

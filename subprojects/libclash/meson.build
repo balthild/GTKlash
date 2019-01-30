@@ -11,7 +11,7 @@ else
   r = run_command(go, 'build',
     '-buildmode=c-archive',
     '-o=clash.a',
-    'clash.go',
+    'clash.go', 'mmdb.go',
   )
   assert(r.returncode() == 0, r.stderr())
 endif

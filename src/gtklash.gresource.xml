@@ -12,6 +12,8 @@
     <file compressed="true">res/ui/rules.ui</file>
 
     <file compressed="true">res/ui/proxy_item.ui</file>
+
+    <file compressed="true">res/ui/progress_dialog.ui</file>
     <file compressed="true">res/ui/proxy_edit_dialog.ui</file>
   </gresource>
 </gresources>

@@ -1,6 +1,10 @@
 using Soup;
 
 namespace Gtklash {
+    public enum Status {
+        LOADING, SUCCEEDED, FAILED
+    }
+
     async void later(uint interval, int priority = GLib.Priority.DEFAULT) {
         Timeout.add(interval, () => {
             later.callback();
