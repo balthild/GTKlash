@@ -5,6 +5,7 @@ import "C"
 import (
 	"fmt"
 	"os"
+	"github.com/oschwald/geoip2-golang"
 	"github.com/Dreamacro/clash/constant"
 	"github.com/Dreamacro/clash/hub"
 )
@@ -27,7 +28,13 @@ func clash_set_config_home_dir(root *C.char) {
 func clash_mmdb_is_invalid() bool {
 	var path = constant.Path.MMDB();
 
-	if _, err := os.Stat(path); os.IsNotExist(err) {
+	_, err := os.Stat(path)
+	if os.IsNotExist(err) {
+		return true
+	}
+
+	_, err = geoip2.Open(path)
+	if err != nil {
 		return true
 	}
 
