@@ -53,8 +53,9 @@ namespace Gtklash {
                 );
                 dialog.show();
 
-                bool result = yield dialog.run_progress((dialog) => {
+                bool result = yield dialog.run_progress((callback) => {
                     clash_start_download_mmdb();
+
                     while (true) {
                         string[] progress = clash_get_download_progress().split(",");
 
@@ -68,7 +69,7 @@ namespace Gtklash {
                         }
 
                         Idle.add(() => {
-                            dialog.set_progress(rate, status);
+                            callback(rate, status);
                             return Source.REMOVE;
                         });
 

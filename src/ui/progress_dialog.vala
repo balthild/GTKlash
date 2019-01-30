@@ -2,7 +2,8 @@ using Gtk;
 using Soup;
 
 namespace Gtklash {
-    delegate void BackgroundTask(ProgressDialog dialog);
+    delegate void BackgroundTaskCallback(double rate, Status status);
+    delegate void BackgroundTask(BackgroundTaskCallback callback);
 
     [GtkTemplate(ui = "/org/gnome/Gtklash/res/ui/progress_dialog.ui")]
     class ProgressDialog : Dialog {
@@ -20,16 +21,15 @@ namespace Gtklash {
 
         public async bool run_progress(BackgroundTask task) {
             new Thread<bool>("progress-dialog-task", () => {
-                task(this);
+                task(set_progress);
+
+                Idle.add(() => {
+                    run_progress.callback();
+                    return Source.REMOVE;
+                });
                 return true;
             });
-
-            while (true) {
-                if (status == Status.LOADING)
-                    yield later(200);
-                else
-                    break;
-            }
+            yield;
 
             return status == Status.SUCCEEDED;
         }
