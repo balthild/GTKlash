@@ -2,6 +2,12 @@
 
 A proxy client written in GTK+3. Based on [Clash](https://github.com/Dreamacro/clash).
 
+## Install
+
+### Arch Linux
+
+AUR package: [gtklash-git](https://aur.archlinux.org/packages/gtklash-git)
+
 ## Notes about the tray icon
 
 GNOME developers has removed the built-in support for status icon because they think it's useless. If you require an icon in GNOME's tray area (normally the top-right corner of your desktop), you could install this shell extension: [AppIndicator Support](https://extensions.gnome.org/extension/615/appindicator-support/).
