@@ -160,8 +160,10 @@ namespace Gtklash.UI {
                 editing.set_proxy(proxy);
             }
 
-            save_config();
             editing = null;
+
+            save_config();
+            clash_reload_config();
         }
 
         void add_new_proxy(Proxy? proxy, ProxyGroup? group) {
@@ -180,6 +182,7 @@ namespace Gtklash.UI {
             }
 
             save_config();
+            clash_reload_config();
         }
 
         public void on_show() {}

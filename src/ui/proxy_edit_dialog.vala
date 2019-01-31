@@ -82,6 +82,7 @@ namespace Gtklash {
             is_group = false;
             current_name = proxy.name;
 
+            reset_fields();
             type_radios_box.set_visible(false);
 
             string type = proxy.get_proxy_type();
@@ -136,6 +137,7 @@ namespace Gtklash {
             is_group = true;
             current_name = group.name;
 
+            reset_fields();
             type_radios_box.set_visible(false);
 
             if (group.group_type == "fallback")
@@ -154,6 +156,7 @@ namespace Gtklash {
             is_group = false;
             current_name = "";
 
+            reset_fields();
             type_radios_box.set_visible(true);
 
             show();
@@ -166,6 +169,32 @@ namespace Gtklash {
             group_fields.set_visible(is_group);
 
             base.show();
+        }
+
+        private void reset_fields() {
+            proxy_name.text = "";
+            proxy_server.text = "";
+            proxy_port.value = 8388;
+
+            proxy_ss_password.text = "";
+            proxy_ss_obfs_tls.active = false;
+            proxy_ss_obfs_host.text = "";
+
+            proxy_vmess_uuid.text = "";
+            proxy_vmess_alter_id.value = 64;
+            proxy_vmess_tls.active = false;
+            proxy_vmess_skip_cert_verify.active = false;
+            proxy_vmess_ws.active = false;
+            proxy_vmess_ws_path.text = "";
+
+            proxy_socks5_username.text = "";
+            proxy_socks5_password.text = "";
+            proxy_socks5_tls.active = false;
+            proxy_socks5_skip_cert_verify.active = false;
+
+            group_name.text = "";
+            group_test_url.text = "";
+            group_test_interval.value = 300;
         }
 
         [GtkCallback]
