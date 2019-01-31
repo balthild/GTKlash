@@ -52,10 +52,7 @@ namespace Gtklash.UI {
             }
         }
 
-        private async void set_active_proxy(string name) {
-            Vars.config.active_proxy = name;
-            save_config();
-
+        private async void api_put_active_proxy(string name) {
             string json = """{"name": "%s"}""".printf(name);
             yield api_call(session, "PUT", "/proxies/Proxy", json);
             yield api_call(session, "PUT", "/proxies/GLOBAL", json);
@@ -115,12 +112,16 @@ namespace Gtklash.UI {
                 active_proxy_item = proxy_list.get_row_at_index(i) as ProxyItem;
                 active_proxy_item.set_active(true);
 
+                string new_name = active_proxy_item.get_name();
+
+                Vars.config.active_proxy = new_name;
                 save_config();
 
                 clash_reload_config();
-                set_active_proxy.begin(active_proxy_item.get_name());
+                api_put_active_proxy.begin(new_name);
             } else {
                 save_config();
+                clash_reload_config();
             }
         }
 
@@ -144,6 +145,8 @@ namespace Gtklash.UI {
                 return;
             }
 
+            string old_name = editing.get_name();
+
             if (editing.is_group) {
                 ProxyGroup old = editing.get_group();
 
@@ -162,8 +165,18 @@ namespace Gtklash.UI {
 
             editing = null;
 
-            save_config();
-            clash_reload_config();
+            if (old_name == Vars.config.active_proxy) {
+                string name = editing.get_name();
+
+                Vars.config.active_proxy = name;
+                save_config();
+
+                clash_reload_config();
+                api_put_active_proxy.begin(name);
+            } else {
+                save_config();
+                clash_reload_config();
+            }
         }
 
         void add_new_proxy(Proxy? proxy, ProxyGroup? group) {
