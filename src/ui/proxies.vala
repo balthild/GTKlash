@@ -52,7 +52,9 @@ namespace Gtklash.UI {
             }
         }
 
-        private async void api_put_active_proxy(string name) {
+        private async void set_active_proxy(string name) {
+            Vars.config.active_proxy = name;
+
             string json = """{"name": "%s"}""".printf(name);
             yield api_call(session, "PUT", "/proxies/Proxy", json);
             yield api_call(session, "PUT", "/proxies/GLOBAL", json);
@@ -65,7 +67,7 @@ namespace Gtklash.UI {
                 return;
 
             string name = selected.get_name();
-            yield api_put_active_proxy(name);
+            yield set_active_proxy(name);
 
             active_proxy_item.set_active(false);
             active_proxy_item = selected;
@@ -107,21 +109,16 @@ namespace Gtklash.UI {
                 group.proxies.remove(name);
             }
 
+            save_config();
+            clash_reload_config();
+
             if (name == Vars.config.active_proxy) {
                 var i = Vars.config.proxy_groups.size;
                 active_proxy_item = proxy_list.get_row_at_index(i) as ProxyItem;
                 active_proxy_item.set_active(true);
 
                 string new_name = active_proxy_item.get_name();
-
-                Vars.config.active_proxy = new_name;
-                save_config();
-
-                clash_reload_config();
-                api_put_active_proxy.begin(new_name);
-            } else {
-                save_config();
-                clash_reload_config();
+                set_active_proxy.begin(new_name);
             }
         }
 
@@ -165,17 +162,12 @@ namespace Gtklash.UI {
 
             editing = null;
 
+            save_config();
+            clash_reload_config();
+
             if (old_name == Vars.config.active_proxy) {
                 string name = editing.get_name();
-
-                Vars.config.active_proxy = name;
-                save_config();
-
-                clash_reload_config();
-                api_put_active_proxy.begin(name);
-            } else {
-                save_config();
-                clash_reload_config();
+                set_active_proxy.begin(name);
             }
         }
 

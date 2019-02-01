@@ -138,6 +138,7 @@ namespace Gtklash {
         }
 
         public void exit_app() {
+            save_config();
             release();
             main_window.real_close();
         }
