@@ -65,7 +65,7 @@ namespace Gtklash.UI {
                 return;
 
             string name = selected.get_name();
-            yield set_active_proxy(name);
+            yield api_put_active_proxy(name);
 
             active_proxy_item.set_active(false);
             active_proxy_item = selected;
