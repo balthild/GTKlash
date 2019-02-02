@@ -47,7 +47,7 @@ namespace Gtklash {
             clash_set_config_home_dir(get_config_dir() + "/clash");
 
             if (clash_mmdb_is_invalid()) {
-                var dialog = new ProgressDialog(
+                var dialog = new UI.ProgressDialog(
                     "Downloading MMDB",
                     "GTKlash requires Maxmind GeoLite Database to make GEOIP rules functional."
                 );

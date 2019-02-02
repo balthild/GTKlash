@@ -1,7 +1,7 @@
 using Gtk;
 using Gee;
 
-namespace Gtklash {
+namespace Gtklash.UI {
     private struct FieldRows { int begin; int end; }
 
     [GtkTemplate(ui = "/org/gnome/Gtklash/res/ui/proxy_edit_dialog.ui")]
@@ -29,6 +29,7 @@ namespace Gtklash {
         public signal void save_proxy(Proxy? proxy, ProxyGroup? group);
 
         [GtkChild] Box type_radios_box;
+        [GtkChild] RadioButton type_group;
 
         [GtkChild] Grid proxy_fields;
         [GtkChild] Grid group_fields;
@@ -69,6 +70,9 @@ namespace Gtklash {
         [GtkChild] Entry group_test_url;
         [GtkChild] SpinButton group_test_interval;
 
+        [GtkChild] ScrolledWindow group_proxies_scroll;
+        [GtkChild] ListBox group_proxies;
+
         public ProxyEditDialog() {
             Object(use_header_bar: 1);
         }
@@ -76,6 +80,11 @@ namespace Gtklash {
         construct {
             set_modal(true);
             change_visible_fields("ss");
+
+            group_proxies.set_header_func(list_separator_func);
+            group_proxies.row_activated.connect((row) => {
+                ((GroupProxyRow) row).flip_checked();
+            });
         }
 
         public void show_proxy(Proxy proxy) {
@@ -149,15 +158,19 @@ namespace Gtklash {
             group_test_url.text = group.url;
             group_test_interval.value = (double) group.interval;
 
+            update_group_proxy_list(group);
+
             show();
         }
 
         public void show_new() {
-            is_group = false;
+            is_group = type_group.active;
             current_name = "";
 
             reset_fields();
             type_radios_box.set_visible(true);
+
+            update_group_proxy_list(null);
 
             show();
         }
@@ -167,6 +180,7 @@ namespace Gtklash {
 
             proxy_fields.set_visible(!is_group);
             group_fields.set_visible(is_group);
+            group_proxies_scroll.set_visible(is_group);
 
             base.show();
         }
@@ -195,6 +209,25 @@ namespace Gtklash {
             group_name.text = "";
             group_test_url.text = "";
             group_test_interval.value = 300;
+        }
+
+        private void update_group_proxy_list(ProxyGroup? group) {
+            foreach (Widget widget in group_proxies.get_children())
+                group_proxies.remove(widget);
+
+            foreach (Proxy proxy in Vars.config.proxies)
+                group_proxies.add(new GroupProxyRow(proxy));
+
+            group_proxies.show_all();
+
+            if (group == null)
+                return;
+
+            foreach (Widget widget in group_proxies.get_children()) {
+                unowned GroupProxyRow row = (GroupProxyRow) widget;
+                if (group.proxies.contains(row.name))
+                    row.flip_checked();
+            }
         }
 
         [GtkCallback]
@@ -235,8 +268,9 @@ namespace Gtklash {
             if (is_group) {
                 name = group_name.text;
 
-                if (group_test_url.text == "") {
-                    prompt("Testing URL must not be empty");
+                string url = group_test_url.text;
+                if (!url.has_prefix("http://") && !url.has_prefix("https://")) {
+                    prompt("Invalid testing URL");
                     return false;
                 }
             } else {
@@ -339,7 +373,11 @@ namespace Gtklash {
 
             var group = new ProxyGroup(name, type, url, interval);
 
-            // TODO: proxies
+            foreach (Widget widget in group_proxies.get_children()) {
+                unowned GroupProxyRow row = (GroupProxyRow) widget;
+                if (row.is_checked())
+                   group.proxies.add(row.name);
+            }
 
             return group;
         }
@@ -405,6 +443,48 @@ namespace Gtklash {
         private bool field_association_switch(Switch sch, bool state) {
             field_association(sch.name, state);
             return false;
+        }
+    }
+
+    class GroupProxyRow : ListBoxRow {
+        public string name { get; private set; }
+
+        Box box;
+        Label label;
+        CheckButton check;
+
+        construct {
+            get_style_context().add_class("group-proxy-row");
+            set_can_focus(false);
+
+            box = new Box(Gtk.Orientation.HORIZONTAL, 8);
+            box.show();
+
+            label = new Label("");
+            label.set_halign(Align.START);
+            label.set_hexpand(true);
+            label.show();
+
+            check = new CheckButton();
+            check.show();
+
+            box.add(label);
+            box.add(check);
+            add(box);
+        }
+
+        public GroupProxyRow(Proxy proxy) {
+            this.name = proxy.name;
+
+            label.label = "%s (%s)".printf(name, proxy.get_proxy_type_description());
+        }
+
+        public bool is_checked() {
+            return check.active;
+        }
+
+        public void flip_checked() {
+            check.active = !check.active;
         }
     }
 }

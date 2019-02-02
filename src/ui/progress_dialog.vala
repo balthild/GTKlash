@@ -1,7 +1,7 @@
 using Gtk;
 using Soup;
 
-namespace Gtklash {
+namespace Gtklash.UI {
     delegate void BackgroundTaskCallback(double rate, Status status);
     delegate void BackgroundTask(BackgroundTaskCallback callback);
 

@@ -54,6 +54,8 @@ namespace Gtklash {
 
             this.url = json_member_str(obj, "url", "");
             this.interval = (ushort) json_member_int(obj, "interval", 300);
+
+            print("%s: url=%s\n", name, url);
         }
     }
 }
