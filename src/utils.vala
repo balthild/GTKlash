@@ -86,7 +86,7 @@ namespace Gtklash {
         if (node == null)
             return default;
         else
-            return node.dup_string() ?? "*&&";
+            return node.dup_string() ?? default;
     }
 
     int64 json_member_int(unowned Json.Object obj, string name, int64 default) {
