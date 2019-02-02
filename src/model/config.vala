@@ -17,7 +17,9 @@ namespace Gtklash {
         string rules;
 
         // Misc
+        bool tray_icon;
         bool dark_editor;
+        bool hide_on_start;
 
         private Json.Object generate_object() {
             var obj = new Json.Object();
@@ -47,7 +49,9 @@ namespace Gtklash {
             obj.set_string_member("rules", rules);
 
             // Misc
+            obj.set_boolean_member("tray-icon", tray_icon);
             obj.set_boolean_member("dark-editor", dark_editor);
+            obj.set_boolean_member("hide-on-start", hide_on_start);
 
             return obj;
         }
@@ -84,23 +88,27 @@ namespace Gtklash {
             Json.Node node = parser.get_root();
             unowned Json.Object obj = node.get_object();
 
+            Config default = get_default_config();
+
             var config = Config() {
                 // General
-                port = (ushort) obj.get_int_member("port"),
-                socks_port = (ushort) obj.get_int_member("socks-port"),
-                allow_lan = obj.get_boolean_member("allow-lan"),
-                external_controller = obj.get_string_member("external-controller"),
-                log_level = obj.get_string_member("log-level"),
-                mode = obj.get_string_member("mode"),
-                active_proxy = obj.get_string_member("active-proxy"),
+                port = (ushort) json_member_int(obj, "port", default.port),
+                socks_port = (ushort) json_member_int(obj, "socks-port", default.socks_port),
+                allow_lan = json_member_bool(obj, "allow-lan", default.allow_lan),
+                external_controller = json_member_str(obj, "external-controller", default.external_controller),
+                log_level = json_member_str(obj, "log-level", default.log_level),
+                mode = json_member_str(obj, "mode", default.mode),
+                active_proxy = json_member_str(obj, "active-proxy", ""),
 
                 // Proxy
                 proxies = new LinkedList<Proxy>(),
                 proxy_groups = new LinkedList<ProxyGroup>(),
-                rules = obj.get_string_member("rules"),
+                rules = json_member_str(obj, "rules", default.rules),
 
                 // Misc
-                dark_editor = obj.get_boolean_member("dark-editor")
+                tray_icon = json_member_bool(obj, "tray-icon", default.tray_icon),
+                dark_editor = json_member_bool(obj, "dark-editor", default.dark_editor),
+                hide_on_start = json_member_bool(obj, "hide-on-start", default.hide_on_start)
             };
 
             Json.Array proxies = obj.get_array_member("proxies");

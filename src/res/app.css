@@ -3,6 +3,16 @@
     padding: 0 16px;
 }
 
+.bordered {
+    border-width: 1px;
+    border-style: solid;
+}
+
+.title-label {
+    font-weight: bold;
+    margin-bottom: 0.8em;
+}
+
 .content-overview .status-label {
     font-size: 3em;
     font-weight: bold;
@@ -23,17 +33,7 @@
     margin-right: 1em;
 }
 
-.data-list {
-    border-width: 1px;
-    border-style: solid;
-}
-
-.data-list-title {
-    font-weight: bold;
-    margin-bottom: 8px;
-}
-
-.content-proxies .proxy-descriptions {
+.content-proxies .proxy-item-box {
     padding: 12px 16px;
 }
 
@@ -52,7 +52,6 @@
 
 .content-proxies .active-indicator {
     opacity: 0.6;
-    margin-right: 16px;
 }
 
 .proxy-edit-dialog .form-controls > label {
@@ -76,4 +75,8 @@
 
 .content-rules .rule-error-row {
     padding: 4px 8px;
+}
+
+.content-settings .settings-item-box {
+    padding: 12px 16px;
 }

@@ -87,10 +87,15 @@ namespace Gtklash {
             external_controller = "127.0.0.1:9090",
             log_level = "info",
             mode = "Rule",
+            active_proxy = "local-socks5",
 
             proxies = new LinkedList<Proxy>(),
             proxy_groups = new LinkedList<ProxyGroup>(),
-            rules = defualt_rules
+            rules = defualt_rules,
+
+            tray_icon = true,
+            dark_editor = false,
+            hide_on_start = false
         };
 
         config.proxies.add(new Socks5("local-socks5", "127.0.0.1", 1080));

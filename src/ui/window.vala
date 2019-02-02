@@ -7,6 +7,7 @@ namespace Gtklash.UI {
             new Gtklash.UI.Overview(),
             new Gtklash.UI.Proxies(),
             new Gtklash.UI.Rules(),
+            new Gtklash.UI.Settings(),
         };
 
         int active = 0;

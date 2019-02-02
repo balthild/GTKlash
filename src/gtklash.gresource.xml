@@ -10,6 +10,7 @@
     <file compressed="true">res/ui/overview.ui</file>
     <file compressed="true">res/ui/proxies.ui</file>
     <file compressed="true">res/ui/rules.ui</file>
+    <file compressed="true">res/ui/settings.ui</file>
 
     <file compressed="true">res/ui/proxy_item.ui</file>
 

@@ -9,6 +9,7 @@
       <object class="GtkBox" id="proxy_item_box">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="spacing">16</property>
         <child>
           <object class="GtkBox">
             <property name="visible">True</property>
@@ -101,6 +102,9 @@
             <property name="position">1</property>
           </packing>
         </child>
+        <style>
+          <class name="proxy-item-box"/>
+        </style>
       </object>
     </child>
   </template>

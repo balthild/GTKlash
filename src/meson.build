@@ -12,6 +12,7 @@ gtklash_sources = [
   'ui/overview.vala',
   'ui/proxies.vala',
   'ui/rules.vala',
+  'ui/settings.vala',
 
   'ui/vector_icon.vala',
   'ui/proxy_item.vala',

@@ -33,7 +33,7 @@
                     <property name="can_focus">False</property>
                     <signal name="row-selected" handler="proxy_row_selected" swapped="no"/>
                     <style>
-                      <class name="data-list"/>
+                      <class name="bordered"/>
                     </style>
                   </object>
                   <packing>
@@ -194,4 +194,10 @@
       <class name="content-proxies"/>
     </style>
   </template>
+  <object class="GtkAdjustment" id="port_adjustment">
+    <property name="lower">1</property>
+    <property name="upper">65535</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
 </interface>
