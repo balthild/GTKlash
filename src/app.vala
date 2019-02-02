@@ -27,20 +27,25 @@ namespace Gtklash {
         }
 
         private async void start_app() {
-            if (!started) {
-                hold();
-
-                init_config();
-                yield start_clash();
-
-                load_css();
-                main_window = new UI.Window(this);
-
-                started = true;
+            if (started) {
+                show_window();
+                return;
             }
 
-            show_window();
+            hold();
+
+            init_config();
+            yield start_clash();
+
+            load_css();
+            main_window = new UI.Window(this);
+
+            if (!Vars.config.hide_on_start)
+                show_window();
+
             add_indicator();
+
+            started = true;
         }
 
         private async void start_clash() {
@@ -110,7 +115,7 @@ namespace Gtklash {
                 indicator.set_icon_theme_path(icon_dir);
             }
 
-            indicator.set_status(IndicatorStatus.ACTIVE);
+            set_indicator_visible(Vars.config.tray_icon);
 
             menu = new Gtk.Menu();
 
@@ -141,6 +146,11 @@ namespace Gtklash {
             save_config();
             release();
             main_window.real_close();
+        }
+
+        public void set_indicator_visible(bool visible) {
+            var status = visible ? IndicatorStatus.ACTIVE : IndicatorStatus.PASSIVE;
+            indicator.set_status(status);
         }
     }
 }

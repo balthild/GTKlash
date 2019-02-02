@@ -66,6 +66,10 @@ namespace Gtklash.UI {
             if (switcher == allow_lan)
                 changed = true;
 
+            if (switcher == tray_icon) {
+                Vars.app.set_indicator_visible(state);
+            }
+
             save_settings();
             return true;
         }
