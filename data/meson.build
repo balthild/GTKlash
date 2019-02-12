@@ -40,7 +40,7 @@ if compile_schemas.found()
   )
 endif
 
-install_data(['gtklash.png', 'gtklash-tray-symbolic.svg'],
+install_data(['gtklash.svg', 'gtklash-tray-symbolic.svg'],
   install_dir: join_paths(get_option('datadir'), 'icons')
 )
 
