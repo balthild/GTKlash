@@ -23,29 +23,28 @@ namespace Gtklash {
 
         protected override void activate() {
             base.activate();
-            start_app.begin();
+
+            if (started) {
+                show_window();
+            } else {
+                started = true;
+                hold();
+                start_app.begin();
+            }
         }
 
         private async void start_app() {
-            if (started) {
-                show_window();
-                return;
-            }
-
-            hold();
-
             init_config();
             yield start_clash();
 
             load_css();
             main_window = new UI.Window(this);
+            main_window.set_icon_name("gtklash");
 
             if (!Vars.config.hide_on_start)
                 show_window();
 
             add_indicator();
-
-            started = true;
         }
 
         private async void start_clash() {
